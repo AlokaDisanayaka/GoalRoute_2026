@@ -1,0 +1,157 @@
+/* ================= ROOT COLOURS ================= */
+:root {
+    --ad_primary: #14213D;
+    --ad_accent: #FCA311;
+    --ad_background: #FFFFFF;
+    --ad_lightGrey: #E5E5E5;
+    --ad_textDark: #1A1A1A;
+}
+
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--ad_background);
+    color: var(--ad_textDark);
+}
+
+
+/* ================= NAVBAR ================= */
+.ad_navbar {
+    display: flex;                  /* places items in a row */
+    justify-content: space-between; /* space between logo and menu */
+    align-items: center;
+    padding: 15px 30px;
+
+    background-color: var(--ad_primary);
+    color: white;
+}
+
+/* Logo styling */
+.ad_logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* Menu links */
+.ad_menu a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+}
+
+/* Hover */
+.ad_menu a:hover {
+    color: var(--ad_accent);
+}
+
+/* Hamburger icon (hidden by default) */
+.ad_hamburger {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+
+/* ================= HERO SECTION ================= */
+.ad_heroSection {
+    position: relative;
+    height: 100vh;
+
+    /* Background image */
+    background: url('../images/hero.jpg') center/cover no-repeat;
+}
+
+/* Dark overlay */
+.ad_heroOverlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    background: rgba(20, 33, 61, 0.75);
+}
+
+/* Content inside hero */
+.ad_heroContent {
+    position: relative;
+    text-align: center;
+
+    top: 30%;
+    padding: 0 20px;
+}
+
+/* Title */
+.ad_heroTitle {
+    font-size: 50px;
+    color: white;
+}
+
+/* Highlight word */
+.ad_heroTitle span {
+    color: var(--ad_accent);
+}
+
+/* Subtitle */
+.ad_heroText {
+    margin: 20px 0;
+    color: var(--ad_lightGrey);
+}
+
+/* Buttons container */
+.ad_countryButtons {
+    margin-top: 20px;
+}
+
+/* Buttons styling */
+.ad_countryButtons button {
+    margin: 10px;
+    padding: 15px 25px;
+
+    border: none;
+    border-radius: 6px;
+
+    background-color: var(--ad_accent);
+    color: var(--ad_primary);
+
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Button hover effect */
+.ad_countryButtons button:hover {
+    background-color: white;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+/* Mobile (<600px) */
+@media (max-width: 600px) {
+
+    /* Hide menu */
+    .ad_menu {
+        display: none;
+        flex-direction: column;
+        background-color: var(--ad_primary);
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 200px;
+    }
+
+    .ad_menu a {
+        display: block;
+        padding: 10px;
+    }
+
+    /* Show hamburger */
+    .ad_hamburger {
+        display: block;
+    }
+
+    /* Smaller title */
+    .ad_heroTitle {
+        font-size: 32px;
+    }
+}
