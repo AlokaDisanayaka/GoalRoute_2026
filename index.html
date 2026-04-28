@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>GoalRoute 2026</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="ad_navbar">
+
+
+    <div class="ad_logo">GoalRoute 2026</div>
+
+    <!-- Menu (desktop + tablet) -->
+    <div class="ad_menu">
+        <a href="#">Home</a>
+        <a href="#">Explore</a>
+        <a href="#">Plan Trip</a>
+        <a href="#">Map</a>
+    </div>
+
+    <!-- Hamburger icon (mobile only) -->
+    <div class="ad_hamburger" onclick="toggleMenu()">
+        ☰
+    </div>
+
+</nav>
+
+
+<!-- ================= HERO SECTION ================= -->
+<section class="ad_heroSection">
+
+    <!-- Dark overlay to make text readable on image -->
+    <div class="ad_heroOverlay"></div>
+
+    <!-- Content inside hero -->
+    <div class="ad_heroContent">
+
+        <!-- Main Title -->
+        <h1 class="ad_heroTitle">
+            PLAN YOUR <span>WORLD CUP</span> JOURNEY
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="ad_heroText">
+            Discover stadiums, cities, and unforgettable experiences across North America.
+        </p>
+
+        <!-- Country selection buttons -->
+        <div class="ad_countryButtons">
+
+            <button onclick="selectCountry('canada')">🇨🇦 Canada</button>
+            <button onclick="selectCountry('usa')">🇺🇸 USA</button>
+            <button onclick="selectCountry('mexico')">🇲🇽 Mexico</button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- JavaScript -->
+<script src="js/script.js"></script>
+
+</body>
+</html>
