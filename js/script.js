@@ -1,29 +1,76 @@
-// ================= TOGGLE MENU (MOBILE) =================
-function toggleMenu() {
+var locationsData = [];
 
-    // Get menu element
-    var menu = document.querySelector(".ad_menu");
+// ================= LOAD JSON =================
+function loadData() {
 
-    // Toggle visibility
-    if (menu.style.display === "block") 
-    {
-        menu.style.display = "none";
-    } 
-    else 
-    {
-        menu.style.display = "block";
+    fetch("json/data.json")
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data) {
+
+            // store data globally
+            locationsData = data.locations;
+
+            // display all cards initially
+            displayCards(locationsData);
+        });
+}
+
+
+// ================= DISPLAY CARDS =================
+function displayCards(data) {
+
+    var container = document.getElementById("ad_cardsContainer");
+
+    // clear existing cards
+    container.innerHTML = "";
+
+    // loop through data
+    for (var i = 0; i < data.length; i++) {
+
+        var item = data[i];
+
+        // create card HTML
+        var card = `
+            <div class="ad_card">
+            <div class="ad_cardTitle">${item.city} - ${item.stadium}</div>
+                <img src="${item.image}" alt="${item.city}">
+
+                <div class="ad_cardContent">
+
+                    <div class="ad_cardTitle">${item.city}</div>
+
+                    <p>${item.description}</p>
+
+                    <div class="ad_price">$${item.price} avg/night</div>
+
+                </div>
+
+            </div>
+        `;
+
+        // add to container
+        container.innerHTML += card;
     }
 }
 
 
-// ================= COUNTRY SELECTION =================
+// ================= FILTER BY COUNTRY =================
 function selectCountry(country) {
 
-    // For now just log 
-    console.log("Selected country:", country);
+    // filter data
+    var filtered = [];
 
-    // FUTURE:
-    // 1. Filter JSON data
-    // 2. Update cards
-    // 3. Move Google Map
+    for (var i = 0; i < locationsData.length; i++) {
+
+        if (locationsData[i].country === country) {
+            filtered.push(locationsData[i]);
+        }
+    }
+
+    // display filtered cards
+    displayCards(filtered);
 }
+
+loadData();
