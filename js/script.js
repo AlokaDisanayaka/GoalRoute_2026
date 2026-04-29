@@ -59,7 +59,6 @@ function displayCards(data) {
 // ================= FILTER BY COUNTRY =================
 function selectCountry(country) {
 
-    // filter data
     var filtered = [];
 
     for (var i = 0; i < locationsData.length; i++) {
@@ -69,8 +68,23 @@ function selectCountry(country) {
         }
     }
 
-    // display filtered cards
     displayCards(filtered);
+
+    // Move map based on country
+    if (country === "usa") {
+        ad_map.setCenter({ lat: 37.0902, lng: -95.7129 });
+        ad_map.setZoom(4);
+    }
+
+    if (country === "canada") {
+        ad_map.setCenter({ lat: 56.1304, lng: -106.3468 });
+        ad_map.setZoom(4);
+    }
+
+    if (country === "mexico") {
+        ad_map.setCenter({ lat: 23.6345, lng: -102.5528 });
+        ad_map.setZoom(5);
+    }
 }
 
 loadData();
