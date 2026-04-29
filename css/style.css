@@ -208,3 +208,14 @@ body {
     color: var(--ad_accent);
     font-weight: bold;
 }
+/* ================= MAP SECTION ================= */
+.ad_mapSection {
+    padding: 40px;
+}
+
+/* Map container */
+#ad_mapContainer {
+    width: 100%;
+    height: 500px;
+    border-radius: 10px;
+}
