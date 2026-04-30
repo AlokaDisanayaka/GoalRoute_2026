@@ -12,6 +12,7 @@ function initMap() {
         center: { lat: 39.8283, lng: -98.5795 } // USA center
     });
 
+    // Create Places service 
     ad_placesService = new google.maps.places.PlacesService(ad_map);
     // Load markers from JSON
     loadMapMarkers();
@@ -68,7 +69,7 @@ function addMarker(location) {
 
     // Click event
     marker.addListener("click", function() {
-        infoWindow.open(ad_map, marker);
+        showInfoPanel(location);
     });
 
     // Store marker 
@@ -143,4 +144,49 @@ function clearPlaceMarkers() {
     }
 
     ad_placesMarkers = [];
+}
+// ================= LOAD NEARBY FOR STADIUM =================
+function loadNearbyPlacesForStadium(lat, lng) {
+
+    var request = {
+        location: { lat: lat, lng: lng }, // specific stadium location
+        radius: 2000,
+        type: "restaurant"
+    };
+
+    ad_placesService.nearbySearch(request, function(results, status) {
+
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            displayNearby(results);
+        }
+    });
+}
+
+// ================= DISPLAY NEARBY =================
+function displayNearby(places) {
+
+    var container = document.getElementById("ad_nearbyList");
+
+    // Clear old data
+    container.innerHTML = "";
+
+    // Loop through places
+    for (var i = 0; i < 5; i++) {
+
+        var place = places[i];
+
+        var item = `
+            <div>
+                <strong>${place.name}</strong><br>
+                ⭐ ${place.rating || "N/A"}
+            </div>
+        `;
+
+        container.innerHTML += item;
+    }
+}
+
+// ================= CLOSE PANEL =================
+function closePanel() {
+    document.getElementById("ad_infoPanel").style.bottom = "-100%";
 }
