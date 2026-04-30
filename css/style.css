@@ -242,3 +242,46 @@ body {
     background-color: var(--ad_accent);
     color: var(--ad_primary);
 }
+
+/* ================= INFO PANEL ================= */
+#ad_infoPanel {
+    position: fixed;
+    bottom: -100%; /* hidden initially */
+    left: 0;
+    width: 100%;
+    height: 60%;
+
+    background-color: white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.2);
+
+    transition: 0.3s;
+    padding: 20px;
+
+    overflow-y: auto;
+}
+
+/* Close button */
+#ad_closePanel {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+/* Image styling */
+#ad_placeImage {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Nearby list */
+#ad_nearbyList div {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
