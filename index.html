@@ -72,6 +72,13 @@
     <div id="ad_cardsContainer"></div>
 
 </section>
+<div class="ad_mapControls">
+
+    <button onclick="togglePlaces('restaurant')">🍔 Restaurants</button>
+    <button onclick="togglePlaces('hotel')">🏨 Hotels</button>
+    <button onclick="togglePlaces('tourist_attraction')">🎯 Attractions</button>
+
+</div>
 <!-- ================= MAP SECTION ================= -->
 <section class="ad_mapSection">
 
@@ -88,8 +95,7 @@
 
 
 <!-- Google Maps API -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAALp6k9INnko-DW664s_wOMrb3nR9qLk8&callback=initMap" async defer></script>
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAALp6k9INnko-DW664s_wOMrb3nR9qLk8&libraries=places&callback=initMap" async defer></script>
 
 
 </body>

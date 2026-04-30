@@ -219,3 +219,26 @@ body {
     height: 500px;
     border-radius: 10px;
 }
+
+.ad_mapControls {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.ad_mapControls button {
+    margin: 10px;
+    padding: 10px 20px;
+
+    border: none;
+    border-radius: 6px;
+
+    background-color: var(--ad_primary);
+    color: white;
+
+    cursor: pointer;
+}
+
+.ad_mapControls button:hover {
+    background-color: var(--ad_accent);
+    color: var(--ad_primary);
+}
