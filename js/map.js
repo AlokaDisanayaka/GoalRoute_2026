@@ -1,27 +1,50 @@
+// ================= GLOBAL MAP VARIABLES =================
+
+// This variable stores the Google Map.
 var ad_map;
-var ad_markers = [];
+
+// This service is used for Google Places API searches.
 var ad_placesService;
+
+// This array stores nearby place markers, such as restaurants and hotels.
 var ad_placesMarkers = [];
-var ad_currentPlaceType = null;
+
+// This stores the last selected stadium location.
+var ad_lastLocation = null;
+
+// This stores the current nearby place type selected by the user.
+var ad_currentType = null;
+
+// Local fallback image used if Google Places has no stadium photo.
+var ad_fallbackImage = "images/hero.jpg";
+
+
 
 // ================= INIT MAP =================
 function initMap() {
 
+    // Create the map centered on North America.
     ad_map = new google.maps.Map(document.getElementById("ad_mapContainer"), {
         zoom: 4,
-        center: { lat: 39.8283, lng: -98.5795 } // USA center
+        center: {
+            lat: 39,
+            lng: -98
+        }
     });
 
-    // Create Places service 
+    // Start the Google Places service.
     ad_placesService = new google.maps.places.PlacesService(ad_map);
-    // Load markers from JSON
+
+    // Add the stadium markers to the map.
     loadMapMarkers();
 }
 
 
-// ================= LOAD MARKERS =================
+
+// ================= LOAD STADIUM MARKERS =================
 function loadMapMarkers() {
 
+    // Load the same stadium data used by the cards.
     fetch("json/data.json")
         .then(function(response) {
             return response.json();
@@ -30,80 +53,211 @@ function loadMapMarkers() {
 
             var locations = data.locations;
 
-            // Loop through all stadiums
+            // Add one marker for each stadium.
             for (var i = 0; i < locations.length; i++) {
-
                 addMarker(locations[i]);
             }
         });
 }
 
 
-// ================= ADD MARKER =================
-function addMarker(location) {
 
-    // Create marker
+// ================= ADD STADIUM MARKER =================
+function addMarker(loc) {
+
     var marker = new google.maps.Marker({
-        position: { lat: location.lat, lng: location.lng },
+        position: {
+            lat: loc.lat,
+            lng: loc.lng
+        },
         map: ad_map,
-        title: location.stadium,
 
-        // Custom marker icon 
+        // Use the custom stadium icon from the images folder.
         icon: {
-            url: "images/markers/stadium.png",
+            url: "images/stadiumIC.png",
             scaledSize: new google.maps.Size(40, 40)
-        }
+        },
+
+        // This helps users understand the marker when hovering.
+        title: loc.stadium
     });
 
-    // Info window =popup when clicked
-
-    var infoWindow = new google.maps.InfoWindow({
-        content: `
-            <div style="width:200px;">
-                <h3>${location.stadium}</h3>
-                <p>${location.city}</p>
-                <img src="${location.image}" style="width:100%;">
-            </div>
-        `
-    });
-
-    // Click event
+    // A marker click opens the info panel.
     marker.addListener("click", function() {
-        showInfoPanel(location);
-    });
 
-    // Store marker 
-    ad_markers.push(marker);
+        // Move and zoom the map to the selected marker.
+        ad_map.panTo({
+            lat: loc.lat,
+            lng: loc.lng
+        });
+        ad_map.setZoom(14);
+
+        // Open the panel with the stadium details.
+        showInfoPanel(loc);
+    });
 }
 
-// ================= TOGGLE PLACES =================
+
+
+// ================= SHOW INFO PANEL =================
+function showInfoPanel(loc) {
+
+    // Save this stadium location for the nearby places buttons.
+    ad_lastLocation = {
+        lat: loc.lat,
+        lng: loc.lng
+    };
+
+    // Display the stadium name.
+    document.getElementById("ad_placeTitle").innerHTML = loc.stadium;
+
+    // Display the city and a short clear description.
+    document.getElementById("ad_placeDetails").innerHTML =
+    "📍 " + loc.city +
+    "<br>🏟 " + loc.description +
+    "<br>🎟 Avg Ticket: $" + loc.price;
+
+    // Set the fallback image first 
+    document.getElementById("ad_placeImage").src = ad_fallbackImage;
+
+    // Load a high-quality Google Places stadium photo.
+    loadStadiumPhoto(loc.stadium, loc.city);
+
+    // Load nearby restaurants for this stadium.
+    loadNearbyRestaurants(loc.lat, loc.lng);
+
+    // Slide the panel up from the bottom.
+    document.getElementById("ad_infoPanel").classList.add("active");
+}
+
+
+
+// ================= LOAD HIGH QUALITY STADIUM PHOTO =================
+function loadStadiumPhoto(stadiumName, cityName) {
+
+    // Build a stronger search query
+    var request = {
+        query: stadiumName + " stadium " + cityName,
+        fields: ["name", "photos"]
+    };
+
+    ad_placesService.findPlaceFromQuery(request, function(results, status) {
+
+        console.log("Photo search status:", status);
+        console.log("Results:", results);
+
+        if (status === google.maps.places.PlacesServiceStatus.OK &&
+            results &&
+            results.length > 0 &&
+            results[0].photos &&
+            results[0].photos.length > 0) {
+
+            // High-quality image
+            var photoUrl = results[0].photos[0].getUrl({
+                maxWidth: 1200
+            });
+
+            document.getElementById("ad_placeImage").src = photoUrl;
+
+        } else {
+
+            // If Google Places has no photo, use a relevant image from Unsplash as a fallback.
+            document.getElementById("ad_placeImage").src =
+                "https://source.unsplash.com/1200x600/?football-stadium";
+        }
+    });
+}
+
+
+// ================= LOAD NEARBY RESTAURANTS FOR PANEL =================
+function loadNearbyRestaurants(lat, lng) {
+
+    var container = document.getElementById("ad_nearbyList");
+
+    // Show a loading message while Google Places returns results.
+    container.innerHTML = "<p class='ad_nearbyMessage'>Loading nearby restaurants...</p>";
+
+    var request = {
+        location: {
+            lat: lat,
+            lng: lng
+        },
+        radius: 2000,
+        type: "restaurant"
+    };
+
+    ad_placesService.nearbySearch(request, function(results, status) {
+
+        var html = "";
+        var limit = 5;
+
+        if (status === google.maps.places.PlacesServiceStatus.OK &&
+            results &&
+            results.length > 0) {
+
+            // Do not try to show more restaurants than Google returns.
+            if (results.length < limit) {
+                limit = results.length;
+            }
+
+            for (var i = 0; i < limit; i++) {
+
+                var place = results[i];
+                var rating = "No rating yet";
+
+                if (place.rating) {
+                    rating = place.rating + " / 5";
+                }
+
+                html += "<div class='ad_nearbyItem'>";
+                html += "<strong>" + place.name + "</strong>";
+                html += "<span>Rating: " + rating + "</span>";
+                html += "</div>";
+            }
+
+            container.innerHTML = html;
+
+        } else {
+
+            container.innerHTML =
+                "<p class='ad_nearbyMessage'>No nearby restaurants found.</p>";
+        }
+    });
+}
+
+
+
+// ================= TOGGLE NEARBY PLACE MARKERS =================
 function togglePlaces(type) {
 
-    // If same button clicked → remove markers
-    if (ad_currentPlaceType === type) {
+    // If the same button is clicked again, remove those markers.
+    if (ad_currentType === type) {
         clearPlaceMarkers();
-        ad_currentPlaceType = null;
+        ad_currentType = null;
         return;
     }
 
-    // Otherwise load new places
-    ad_currentPlaceType = type;
+    // Save the selected nearby place type.
+    ad_currentType = type;
 
+    // Remove old nearby markers before adding new ones.
     clearPlaceMarkers();
-    searchNearbyPlaces(type);
-}
-//================== SEARCH NEARBY PLACES =================
-function searchNearbyPlaces(type) {
+
+    // Ask the user to select a stadium first.
+    if (!ad_lastLocation) {
+        alert("Please select a stadium first.");
+        return;
+    }
 
     var request = {
-        location: ad_map.getCenter(), // search near map center
-        radius: 3000, // 3km radius
+        location: ad_lastLocation,
+        radius: 3000,
         type: type
     };
 
     ad_placesService.nearbySearch(request, function(results, status) {
 
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
+        if (status === google.maps.places.PlacesServiceStatus.OK && results) {
 
             for (var i = 0; i < results.length; i++) {
                 createPlaceMarker(results[i]);
@@ -112,21 +266,48 @@ function searchNearbyPlaces(type) {
     });
 }
 
-// ================= CREATE PLACE MARKER =================
+
+
+// ================= CREATE NEARBY PLACE MARKER =================
 function createPlaceMarker(place) {
+
+    var iconUrl = "";
+
+    // Choose the icon that matches the selected nearby place type.
+    if (ad_currentType === "restaurant") {
+        iconUrl = "images/restaurantIC.png";
+    }
+
+    if (ad_currentType === "hotel") {
+        iconUrl = "images/hotelIC.png";
+    }
+
+    if (ad_currentType === "tourist_attraction") {
+        iconUrl = "images/tourist_attractionIC.png";
+    }
 
     var marker = new google.maps.Marker({
         map: ad_map,
-        position: place.geometry.location
+        position: place.geometry.location,
+        icon: {
+            url: iconUrl,
+            scaledSize: new google.maps.Size(30, 30)
+        }
     });
 
+    var rating = "No rating yet";
+
+    if (place.rating) {
+        rating = place.rating + " / 5";
+    }
+
+    // Small Google Maps popup for nearby places.
     var infoWindow = new google.maps.InfoWindow({
-        content: `
-            <div style="width:200px;">
-                <h4>${place.name}</h4>
-                <p>Rating: ${place.rating || "N/A"}</p>
-            </div>
-        `
+        content:
+            "<div class='ad_mapPopup'>" +
+            "<strong>" + place.name + "</strong><br>" +
+            "Rating: " + rating +
+            "</div>"
     });
 
     marker.addListener("click", function() {
@@ -136,7 +317,9 @@ function createPlaceMarker(place) {
     ad_placesMarkers.push(marker);
 }
 
-// ================= CLEAR PLACE MARKERS =================
+
+
+// ================= CLEAR NEARBY PLACE MARKERS =================
 function clearPlaceMarkers() {
 
     for (var i = 0; i < ad_placesMarkers.length; i++) {
@@ -145,48 +328,11 @@ function clearPlaceMarkers() {
 
     ad_placesMarkers = [];
 }
-// ================= LOAD NEARBY FOR STADIUM =================
-function loadNearbyPlacesForStadium(lat, lng) {
 
-    var request = {
-        location: { lat: lat, lng: lng }, // specific stadium location
-        radius: 2000,
-        type: "restaurant"
-    };
 
-    ad_placesService.nearbySearch(request, function(results, status) {
 
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-            displayNearby(results);
-        }
-    });
-}
-
-// ================= DISPLAY NEARBY =================
-function displayNearby(places) {
-
-    var container = document.getElementById("ad_nearbyList");
-
-    // Clear old data
-    container.innerHTML = "";
-
-    // Loop through places
-    for (var i = 0; i < 5; i++) {
-
-        var place = places[i];
-
-        var item = `
-            <div>
-                <strong>${place.name}</strong><br>
-                ⭐ ${place.rating || "N/A"}
-            </div>
-        `;
-
-        container.innerHTML += item;
-    }
-}
-
-// ================= CLOSE PANEL =================
+// ================= CLOSE INFO PANEL =================
 function closePanel() {
-    document.getElementById("ad_infoPanel").style.bottom = "-100%";
+
+    document.getElementById("ad_infoPanel").classList.remove("active");
 }
