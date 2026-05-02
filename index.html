@@ -3,7 +3,7 @@
 
 <head>
     <title>GoalRoute 2026</title>
-    <!-- CSS -->
+    <link rel="icon" type="image/png" href="images/ball.png">
     <link rel="stylesheet" href="css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -13,98 +13,95 @@
 <!-- ================= NAVBAR ================= -->
 <nav class="ad_navbar">
 
+    <!-- LOGO BLOCK -->
+    <div class="ad_logoContainer">
 
-    <div class="ad_logo">GoalRoute 2026</div>
+        <div class="ad_logoIcon">⚽</div>
 
-    <!-- Menu (desktop + tablet) -->
+        <div class="ad_logoText">
+            GoalRoute <span>2026</span>
+        </div>
+
+    </div>
+
+    <!-- MENU -->
     <div class="ad_menu">
-        <a href="#">Home</a>
-        <a href="#">Explore</a>
-        <a href="#">Plan Trip</a>
-        <a href="#">Map</a>
+        <a href="#ad_home">Home</a>
+        <a href="#ad_cards">Explore</a>
+        <a href="#ad_map">Map</a>
     </div>
 
-    <!-- Hamburger icon (mobile only) -->
-    <div class="ad_hamburger" onclick="toggleMenu()">
-        ☰
-    </div>
+    <!-- HAMBURGER -->
+    <div class="ad_hamburger" onclick="toggleMenu()">☰</div>
 
 </nav>
 
+<!-- ================= HERO ================= -->
+<section id="ad_home" class="ad_heroSection">
 
-<!-- ================= HERO SECTION ================= -->
-<section class="ad_heroSection">
-
-    <!-- Dark overlay to make text readable on image -->
+    <!-- Overlay -->
     <div class="ad_heroOverlay"></div>
 
-    <!-- Content inside hero -->
+    <!-- Content -->
     <div class="ad_heroContent">
 
-        <!-- Main Title -->
         <h1 class="ad_heroTitle">
             PLAN YOUR <span>WORLD CUP</span> JOURNEY
         </h1>
 
-        <!-- Subtitle -->
         <p class="ad_heroText">
-            Discover stadiums, cities, and unforgettable experiences across North America.
+            Explore stadiums, discover cities, and build your perfect match-day experience across North America.
         </p>
 
-        <!-- Country selection buttons -->
-        <div class="ad_countryButtons">
+        <!-- CTA BUTTON -->
+        <button class="ad_ctaButton" onclick="scrollToExplore()">
+            Start Exploring ↓
+        </button>
 
+        <!-- Country Filters -->
+        <div class="ad_countryButtons">
             <button onclick="selectCountry('canada')">🇨🇦 Canada</button>
             <button onclick="selectCountry('usa')">🇺🇸 USA</button>
             <button onclick="selectCountry('mexico')">🇲🇽 Mexico</button>
-
         </div>
 
     </div>
 
 </section>
-<!-- ================= CARDS SECTION ================= -->
-<section class="ad_cardsSection">
 
-    <h2 class="ad_sectionTitle">Explore Destinations</h2>
 
-    <!-- Container where cards will be added -->
-    <div id="ad_cardsContainer"></div>
-
-</section>
-<div class="ad_mapControls">
-
-    <button onclick="togglePlaces('restaurant')">🍔 Restaurants</button>
-    <button onclick="togglePlaces('hotel')">🏨 Hotels</button>
-    <button onclick="togglePlaces('tourist_attraction')">🎯 Attractions</button>
-
-</div>
-<!-- ================= MAP SECTION ================= -->
-<section class="ad_mapSection">
+<!-- ================= MAP ================= -->
+<section id="ad_map" class="ad_mapSection">
 
     <h2 class="ad_sectionTitle">Explore Map</h2>
+     <div id="ad_stadiumTags"></div>
+    <!-- Controls inside map section -->
+    <div class="ad_mapControls">
+        <button onclick="togglePlaces('restaurant')">🍝 Restaurants</button>
+        <button onclick="togglePlaces('hotel')">🏨 Hotels</button>
+        <button onclick="togglePlaces('tourist_attraction')">🎯 Attractions</button>
+    </div>
 
-    <!-- Google Map container -->
     <div id="ad_mapContainer"></div>
 
 </section>
 
+
 <!-- ================= INFO PANEL ================= -->
 <div id="ad_infoPanel">
 
-    <!-- Close button -->
     <span id="ad_closePanel" onclick="closePanel()">✖</span>
 
-    <!-- Content container -->
     <div id="ad_infoContent">
 
-        <!-- Stadium title -->
-        <h2 id="ad_placeTitle">Stadium Name</h2>
+        <h2 id="ad_placeTitle"></h2>
 
         <!-- Image -->
         <img id="ad_placeImage" src="" alt="stadium">
 
-        <!-- Nearby places -->
+        <!-- Extra info -->
+        <p id="ad_placeDetails"></p>
+
         <h3>Nearby Restaurants</h3>
         <div id="ad_nearbyList"></div>
 
@@ -112,14 +109,12 @@
 
 </div>
 
-<!-- JavaScript -->
+
+<!-- JS -->
 <script src="js/script.js"></script>
 <script src="js/map.js"></script>
 
-
-<!-- Google Maps API -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAALp6k9INnko-DW664s_wOMrb3nR9qLk8&libraries=places&callback=initMap" async defer></script>
-
 
 </body>
 </html>
