@@ -1,90 +1,168 @@
+// ================= GLOBAL DATA =================
+
+// This array stores all stadium data after it is loaded from the JSON file.
 var locationsData = [];
 
-// ================= LOAD JSON =================
+
+
+// ================= LOAD JSON DATA =================
 function loadData() {
 
+    // Get the stadium data from the JSON file.
     fetch("json/data.json")
         .then(function(response) {
             return response.json();
         })
         .then(function(data) {
 
-            // store data globally
+            // Save the locations so other functions can use them.
             locationsData = data.locations;
 
-            // display all cards initially
-            displayCards(locationsData);
+            // Show all stadium cards on the page.
+           displayTags(locationsData);
         });
 }
 
 
-// ================= DISPLAY CARDS =================
+
+// ================= DISPLAY STADIUM CARDS =================
 function displayCards(data) {
 
     var container = document.getElementById("ad_cardsContainer");
+    var html = "";
 
-    // clear existing cards
+    // Clear old cards before adding new ones.
     container.innerHTML = "";
 
-    // loop through data
+    // Build one simple card for each stadium.
     for (var i = 0; i < data.length; i++) {
 
         var item = data[i];
 
-        // create card HTML
-        var card = `
-            <div class="ad_card">
-            <div class="ad_cardTitle">${item.city} - ${item.stadium}</div>
-                <img src="${item.image}" alt="${item.city}">
-
-                <div class="ad_cardContent">
-
-                    <div class="ad_cardTitle">${item.city}</div>
-
-                    <p>${item.description}</p>
-
-                    <div class="ad_price">$${item.price} avg/night</div>
-
-                </div>
-
-            </div>
-        `;
-
-        // add to container
-        container.innerHTML += card;
+        html += "<div class='ad_card' onclick='selectStadium(" + item.id + ")'>";
+        html += "<h3>" + item.city + "</h3>";
+        html += "<p>" + item.stadium + "</p>";
+        html += "</div>";
     }
+
+    container.innerHTML = html;
 }
 
 
-// ================= FILTER BY COUNTRY =================
-function selectCountry(country) {
 
-    var filtered = [];
+// ================= CARD CLICK BEHAVIOUR =================
+function selectStadium(id) {
 
+    // Find the stadium that matches the clicked card.
     for (var i = 0; i < locationsData.length; i++) {
 
-        if (locationsData[i].country === country) {
-            filtered.push(locationsData[i]);
+        if (locationsData[i].id === id) {
+
+            var loc = locationsData[i];
+
+            // Move the map to the stadium location.
+            ad_map.panTo({
+                lat: loc.lat,
+                lng: loc.lng
+            });
+
+            // Zoom in so the selected stadium is easy to see.
+            ad_map.setZoom(13);
+
+            // Save this location for the nearby places buttons.
+            ad_lastLocation = {
+                lat: loc.lat,
+                lng: loc.lng
+            };
+
+        
         }
-    }
-
-    displayCards(filtered);
-
-    // Move map based on country
-    if (country === "usa") {
-        ad_map.setCenter({ lat: 37.0902, lng: -95.7129 });
-        ad_map.setZoom(4);
-    }
-
-    if (country === "canada") {
-        ad_map.setCenter({ lat: 56.1304, lng: -106.3468 });
-        ad_map.setZoom(4);
-    }
-
-    if (country === "mexico") {
-        ad_map.setCenter({ lat: 23.6345, lng: -102.5528 });
-        ad_map.setZoom(5);
     }
 }
 
+
+
+function selectCountry(country) {
+
+    var filtered = locationsData.filter(function(item) {
+        return item.country === country;
+    });
+
+    // Show tags instead of cards
+    displayTags(filtered);
+}
+
+// ================= MOBILE MENU =================
+function toggleMenu() {
+
+    var menu = document.querySelector(".ad_menu");
+
+    if (menu.style.display === "flex") {
+        menu.style.display = "none";
+    } else {
+        menu.style.display = "flex";
+    }
+}
+
+
+
+// ================= SCROLL TO CARDS =================
+function scrollToExplore() {
+
+    document.getElementById("ad_cards").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+// ================= DISPLAY STADIUM TAGS =================
+function displayTags(data) {
+
+    var container = document.getElementById("ad_stadiumTags");
+    var html = "";
+
+    container.innerHTML = "";
+
+    for (var i = 0; i < data.length; i++) {
+
+        var item = data[i];
+
+        html += "<div class='ad_tag' onclick='focusStadium(" + item.id + ", this)'>";
+        html += item.stadium;
+        html += "</div>";
+    }
+
+    container.innerHTML = html;
+}
+
+// ================= MOVE MAP TO STADIUM =================
+function focusStadium(id, element) {
+
+    // remove previous active tag
+    var tags = document.getElementsByClassName("ad_tag");
+
+    for (var j = 0; j < tags.length; j++) {
+        tags[j].classList.remove("activeTag");
+    }
+
+    // add active style to clicked tag 
+    element.classList.add("activeTag");
+
+
+    // move map 
+    for (var i = 0; i < locationsData.length; i++) {
+
+        if (locationsData[i].id === id) {
+
+            var loc = locationsData[i];
+
+            ad_map.panTo({ lat: loc.lat, lng: loc.lng });
+            ad_map.setZoom(13);
+
+            document.getElementById("ad_mapSection").scrollIntoView({
+                behavior: "smooth"
+            });
+        }
+    }
+}
+// Start loading the page data.
 loadData();
