@@ -7,7 +7,7 @@
     --ad_textDark: #1A1A1A;
 }
 
-
+/* ================= GLOBAL ================= */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -15,11 +15,10 @@ body {
     color: var(--ad_textDark);
 }
 
-
 /* ================= NAVBAR ================= */
 .ad_navbar {
-    display: flex;                  /* places items in a row */
-    justify-content: space-between; /* space between logo and menu */
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     padding: 15px 30px;
 
@@ -27,67 +26,69 @@ body {
     color: white;
 }
 
-/* Logo styling */
 .ad_logo {
     font-size: 22px;
     font-weight: bold;
 }
 
 /* Menu links */
+.ad_menu {
+    display: flex;
+}
+
 .ad_menu a {
     margin: 0 15px;
     text-decoration: none;
     color: white;
     font-size: 16px;
+    transition: 0.3s;
 }
 
-/* Hover */
 .ad_menu a:hover {
     color: var(--ad_accent);
 }
 
-/* Hamburger icon (hidden by default) */
+/* Hamburger (hidden on desktop) */
 .ad_hamburger {
     display: none;
     font-size: 24px;
     cursor: pointer;
 }
 
-
 /* ================= HERO SECTION ================= */
 .ad_heroSection {
     position: relative;
     height: 100vh;
 
-    /* Background image */
     background: url('../images/hero.jpg') center/cover no-repeat;
 }
 
-/* Dark overlay */
+/* Overlay */
 .ad_heroOverlay {
     position: absolute;
     width: 100%;
     height: 100%;
-
     background: rgba(20, 33, 61, 0.75);
 }
 
-/* Content inside hero */
+/* Content */
 .ad_heroContent {
     position: relative;
     text-align: center;
 
-    top: 30%;
+    top: 50%;
+    transform: translateY(-50%);
+
     padding: 0 20px;
 }
 
 /* Title */
 .ad_heroTitle {
-    font-size: 50px;
+    font-size: 55px;
     color: white;
+    letter-spacing: 2px;
 }
 
-/* Highlight word */
 .ad_heroTitle span {
     color: var(--ad_accent);
 }
@@ -96,37 +97,178 @@ body {
 .ad_heroText {
     margin: 20px 0;
     color: var(--ad_lightGrey);
+    font-size: 18px;
 }
 
-/* Buttons container */
+/* Country buttons */
 .ad_countryButtons {
     margin-top: 20px;
 }
 
-/* Buttons styling */
 .ad_countryButtons button {
     margin: 10px;
-    padding: 15px 25px;
+    padding: 12px 25px;
 
     border: none;
-    border-radius: 6px;
+    border-radius: 25px;
 
-    background-color: var(--ad_accent);
+    background: var(--ad_accent);
     color: var(--ad_primary);
 
     font-weight: bold;
     cursor: pointer;
+
+    transition: 0.3s;
 }
 
-/* Button hover effect */
 .ad_countryButtons button:hover {
-    background-color: white;
+    transform: scale(1.05);
+    background: white;
 }
 
+/* ================= SECTION TITLES ================= */
+.ad_sectionTitle {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 28px;
+}
+
+/* ================= CARDS SECTION ================= */
+.ad_cardsSection {
+    padding: 60px 40px;
+    background-color: var(--ad_lightGrey);
+}
+
+/* Cards grid */
+#ad_cardsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* Card */
+.ad_card {
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.ad_card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+/* Card image */
+.ad_card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+/* Card content */
+.ad_cardContent {
+    padding: 20px;
+}
+
+/* Title */
+.ad_cardTitle {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Price */
+.ad_price {
+    color: var(--ad_accent);
+    font-weight: bold;
+}
+
+/* ================= MAP SECTION ================= */
+.ad_mapSection {
+    padding: 60px 40px;
+}
+
+/* Map container */
+#ad_mapContainer {
+    width: 100%;
+    height: 500px;
+    border-radius: 10px;
+}
+
+/* Map buttons */
+.ad_mapControls {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.ad_mapControls button {
+    margin: 10px;
+    padding: 10px 18px;
+
+    border-radius: 20px;
+    border: none;
+
+    background: var(--ad_primary);
+    color: white;
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.ad_mapControls button:hover {
+    background: var(--ad_accent);
+    transform: scale(1.05);
+}
+
+/* ================= INFO PANEL ================= */
+#ad_infoPanel {
+    position: fixed;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    height: 65%;
+
+    background: white;
+
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+
+    box-shadow: 0 -8px 20px rgba(0,0,0,0.3);
+
+    transition: 0.4s;
+    padding: 20px;
+
+    overflow-y: auto;
+}
+
+/* Close button */
+#ad_closePanel {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+/* Image */
+#ad_placeImage {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Nearby list */
+#ad_nearbyList div {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
 
 /* ================= RESPONSIVE ================= */
-
-/* Mobile (<600px) */
 @media (max-width: 600px) {
 
     /* Hide menu */
@@ -150,138 +292,705 @@ body {
         display: block;
     }
 
-    /* Smaller title */
+    /* Smaller hero */
     .ad_heroTitle {
         font-size: 32px;
     }
+
+    /* Stack spacing */
+    .ad_cardsSection,
+    .ad_mapSection {
+        padding: 30px 15px;
+    }
+}
+/* ================= STICKY gLASS NAVBAR ================= */
+.ad_navbar {
+    backdrop-filter: blur(10px);
+    background: rgba(20, 33, 61, 0.85);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+/* ================= HERO SECTION UPGRADE ================= */
+
+.ad_heroSection {
+    background: linear-gradient(
+        135deg,
+        rgba(20,33,61,0.9),
+        rgba(252,163,17,0.9)
+    ),
+    url('../images/hero.jpg') center/cover no-repeat;
+
+    height: 80vh;
 }
 
-/* ================= CARDS SECTION ================= */
-.ad_cardsSection {
-    padding: 40px;
-    background-color: var(--ad_lightGrey);
+/* Subtle fade-in animation */
+.ad_heroContent {
+    animation: ad_fadeIn 1s ease-in-out;
+}
+/* =================  SMOOTH ANIMATIONS ================= */
+
+@keyframes ad_fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* Section title */
-.ad_sectionTitle {
-    text-align: center;
-    margin-bottom: 30px;
-}
+/* ================= CLEAN INFO PANEL FINAL FIX ================= */
 
-/* Cards container (grid layout) */
-#ad_cardsContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-}
+/* The panel starts hidden below the screen. */
+#ad_infoPanel {
+    position: fixed;
+    left: 50%;
+    bottom: 0;
+    z-index: 2000;
 
-/* Individual card */
-.ad_card {
-    background-color: white;
-    border-radius: 10px;
-    overflow: hidden;
-
-    /* subtle shadow */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-/* Card image */
-.ad_card img {
     width: 100%;
-    height: 180px;
-    object-fit: cover;
+    max-width: 950px;
+    max-height: 82vh;
+
+    box-sizing: border-box;
+    padding: 28px;
+
+    background: #ffffff;
+    border-top-left-radius: 28px;
+    border-top-right-radius: 28px;
+
+    box-shadow: 0 -14px 40px rgba(0, 0, 0, 0.28);
+
+    overflow-y: auto;
+
+    transform: translate(-50%, 100%);
+    transition: transform 0.35s ease;
 }
 
-/* Card content */
-.ad_cardContent {
-    padding: 15px;
+/* This class slides the panel up when a marker is clicked. */
+#ad_infoPanel.active {
+    bottom: 0;
+    transform: translate(-50%, 0);
 }
 
-/* City name */
-.ad_cardTitle {
+/* Keeps the panel content neat and readable. */
+#ad_infoContent {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+/* Close button in the top right of the panel. */
+#ad_closePanel {
+    position: absolute;
+    top: 18px;
+    right: 24px;
+
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+
+    text-align: center;
+    border-radius: 50%;
+
+    background: #f1f1f1;
+    color: #14213D;
+
     font-size: 18px;
     font-weight: bold;
-}
-
-/* Price highlight */
-.ad_price {
-    color: var(--ad_accent);
-    font-weight: bold;
-}
-/* ================= MAP SECTION ================= */
-.ad_mapSection {
-    padding: 40px;
-}
-
-/* Map container */
-#ad_mapContainer {
-    width: 100%;
-    height: 500px;
-    border-radius: 10px;
-}
-
-.ad_mapControls {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.ad_mapControls button {
-    margin: 10px;
-    padding: 10px 20px;
-
-    border: none;
-    border-radius: 6px;
-
-    background-color: var(--ad_primary);
-    color: white;
-
     cursor: pointer;
 }
 
-.ad_mapControls button:hover {
-    background-color: var(--ad_accent);
-    color: var(--ad_primary);
+#ad_closePanel:hover {
+    background: #FCA311;
 }
 
-/* ================= INFO PANEL ================= */
+/* Stadium name. */
+#ad_placeTitle {
+    margin: 0 45px 18px 0;
+
+    color: #14213D;
+    font-size: 28px;
+    line-height: 1.2;
+}
+
+/* Large clear Google Places image. */
+#ad_placeImage {
+    display: block;
+
+    width: 100%;
+    height: 340px;
+    margin-bottom: 20px;
+
+    object-fit: cover;
+    border-radius: 18px;
+
+    background: #e5e5e5;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
+}
+
+/* City and venue text. */
+#ad_placeDetails {
+    margin: 0 0 22px 0;
+
+    color: #444444;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* Nearby restaurant heading. */
+#ad_infoPanel h3 {
+    margin: 0 0 14px 0;
+
+    color: #14213D;
+    font-size: 20px;
+}
+
+/* Restaurant list layout. */
+#ad_nearbyList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 12px;
+}
+
+/* One restaurant item. */
+.ad_nearbyItem {
+    padding: 14px;
+
+    border: 1px solid #e7e7e7;
+    border-radius: 12px;
+
+    background: #fafafa;
+}
+
+.ad_nearbyItem strong {
+    display: block;
+    margin-bottom: 6px;
+
+    color: #1A1A1A;
+    font-size: 15px;
+}
+
+.ad_nearbyItem span {
+    color: #666666;
+    font-size: 14px;
+}
+
+/* Loading and empty restaurant messages. */
+.ad_nearbyMessage {
+    margin: 0;
+    color: #666666;
+}
+
+/* Small popup used by nearby markers on the map. */
+.ad_mapPopup {
+    width: 180px;
+    line-height: 1.5;
+}
+
+/* Mobile-friendly panel sizing. */
+@media (max-width: 600px) {
+
+    #ad_infoPanel {
+        max-height: 88vh;
+        padding: 22px 16px;
+
+        border-top-left-radius: 22px;
+        border-top-right-radius: 22px;
+    }
+
+    #ad_placeTitle {
+        font-size: 23px;
+    }
+
+    #ad_placeImage {
+        height: 230px;
+        border-radius: 14px;
+    }
+
+    #ad_nearbyList {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ================= INFO PANEL FIT FIX ================= */
+
+/* Final override: keep the whole panel readable on desktop and mobile. */
 #ad_infoPanel {
-    position: fixed;
-    bottom: -100%; /* hidden initially */
     left: 0;
+    right: 0;
+    bottom: 0;
+
+    width: 100%;
+    max-width: none;
+    height: auto;
+    max-height: 78vh;
+
+    padding: 18px 22px;
+
+    transform: translateY(100%);
+}
+
+/* Slide straight up from the bottom. */
+#ad_infoPanel.active {
+    transform: translateY(0);
+}
+
+/* Keep content compact so it fits inside the visible panel area. */
+#ad_infoContent {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Smaller close button so it does not take too much space. */
+#ad_closePanel {
+    top: 12px;
+    right: 18px;
+
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+}
+
+/* Stadium title stays visible above the image. */
+#ad_placeTitle {
+    margin: 0 45px 10px 0;
+
+    font-size: 24px;
+    line-height: 1.2;
+}
+
+/* Clear image, but not so tall that it pushes content off screen. */
+#ad_placeImage {
+    height: 220px;
+    margin-bottom: 12px;
+
+    border-radius: 14px;
+}
+
+/* City and venue text uses less vertical space. */
+#ad_placeDetails {
+    margin-bottom: 14px;
+
+    font-size: 15px;
+    line-height: 1.45;
+}
+
+#ad_infoPanel h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+/* Restaurants fit in a neat row on larger screens. */
+#ad_nearbyList {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.ad_nearbyItem {
+    padding: 10px 12px;
+    min-height: 58px;
+}
+
+.ad_nearbyItem strong {
+    margin-bottom: 4px;
+    font-size: 14px;
+    line-height: 1.25;
+}
+
+.ad_nearbyItem span {
+    font-size: 13px;
+}
+
+/* Tablet layout: restaurants wrap cleanly. */
+@media (max-width: 900px) {
+
+    #ad_nearbyList {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Phone layout: smaller image and one restaurant per row. */
+@media (max-width: 600px) {
+
+    #ad_infoPanel {
+        max-height: 82vh;
+        padding: 16px;
+    }
+
+    #ad_placeTitle {
+        font-size: 21px;
+    }
+
+    #ad_placeImage {
+        height: 170px;
+    }
+
+    #ad_nearbyList {
+        grid-template-columns: 1fr;
+    }
+}
+
+.ad_card {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+
+    transition: 0.4s;
+    cursor: pointer;
+}
+/*================== CARD DESIGN UPGRADE ================= */
+
+/* Image overlay */
+.ad_card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: 0.4s;
+}
+
+/* Dark gradient overlay */
+.ad_card::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
     width: 100%;
     height: 60%;
 
-    background-color: white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+    background: linear-gradient(
+        transparent,
+        rgba(0,0,0,0.7)
+    );
+}
 
-    box-shadow: 0 -4px 10px rgba(0,0,0,0.2);
+/* Text on top of image */
+.ad_cardContent {
+    position: absolute;
+    bottom: 10px;
+    left: 15px;
+    color: white;
+}
+
+/* Hover effects */
+.ad_card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+}
+
+.ad_card:hover img {
+    transform: scale(1.1);
+}
+
+/*================== BUTTON HOVER EFFECTS ================= */
+.ad_countryButtons button,
+.ad_mapControls button {
 
     transition: 0.3s;
-    padding: 20px;
+}
+
+.ad_countryButtons button:hover,
+.ad_mapControls button:hover {
+
+    box-shadow: 0 0 15px rgba(252,163,17,0.8);
+}
+
+/*================== MAP DESIGN UPGRADE ================= */
+#ad_mapContainer {
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+/*================== PREMIUM INFO PANEL ================= */
+
+#ad_infoPanel {
+    position: fixed;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    height: 75%;
+
+    background: white;
+
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
+
+    transition: 0.4s ease;
+    padding: 25px;
 
     overflow-y: auto;
 }
 
-/* Close button */
-#ad_closePanel {
-    position: absolute;
-    right: 20px;
-    top: 10px;
-    cursor: pointer;
-    font-size: 20px;
+#ad_infoPanel.active {
+    bottom: 0;
 }
 
-/* Image styling */
+/* Title */
+#ad_placeTitle {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Details */
+#ad_placeDetails {
+    color: #666;
+    margin-bottom: 15px;
+}
+
+/* Image */
 #ad_placeImage {
     width: 100%;
-    height: 200px;
+    height: 260px;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+/*=================== PREMIUM PLACE IMAGE ================= */
+#ad_placeImage {
+    width: 100%;
+    height: 220px;
+
+    border-radius: 15px;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-/* Nearby list */
-#ad_nearbyList div {
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
+/*=================== SMOOTH SCROLLING ================= */
+html {
+    scroll-behavior: smooth;
+}
+/*=================== PREMIUM NAVBAR ================= */
+
+/* NAVBAR CONTAINER */
+.ad_navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 15px 40px;
+
+    background: rgba(20, 33, 61, 0.9);
+    backdrop-filter: blur(10px);
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* LOGO BLOCK */
+.ad_logoContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ICON */
+.ad_logoIcon {
+    font-size: 24px;
+}
+
+/* TEXT */
+.ad_logoText {
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: white;
+}
+
+/* HIGHLIGHT YEAR */
+.ad_logoText span {
+    color: var(--ad_accent);
+}
+
+/* MENU */
+.ad_menu {
+    display: flex;
+    gap: 25px;
+}
+
+/* LINKS */
+.ad_menu a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    position: relative;
+}
+
+/* UNDERLINE HOVER EFFECT */
+.ad_menu a::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    left: 0;
+    bottom: -5px;
+
+    background: var(--ad_accent);
+    transition: 0.3s;
+}
+
+.ad_menu a:hover::after {
+    width: 100%;
+}
+
+/*===================== PREMIUM HERO ================= */
+
+/* HERO SECTION */
+.ad_heroSection {
+    position: relative;
+    height: 85vh;
+
+    background: linear-gradient(
+        rgba(20,33,61,0.8),
+        rgba(20,33,61,0.9)
+    ),
+    url('../images/hero.jpg') center/cover no-repeat;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* OVERLAY (soft gradient layer) */
+.ad_heroOverlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.2),
+        rgba(0,0,0,0.6)
+    );
+}
+
+/* CONTENT */
+.ad_heroContent {
+    position: relative;
+    text-align: center;
+    max-width: 700px;
+    padding: 20px;
+
+    animation: ad_fadeIn 1s ease-in-out;
+}
+
+/* TITLE */
+.ad_heroTitle {
+    font-size: 60px;
+    color: white;
+    line-height: 1.2;
+}
+
+.ad_heroTitle span {
+    color: var(--ad_accent);
+}
+
+/* TEXT */
+.ad_heroText {
+    margin: 20px 0;
+    font-size: 18px;
+    color: var(--ad_lightGrey);
+}
+
+/* CTA BUTTON */
+.ad_ctaButton {
+    margin-top: 15px;
+    padding: 14px 30px;
+
+    border-radius: 30px;
+    border: none;
+
+    background: var(--ad_accent);
+    color: var(--ad_primary);
+
+    font-weight: bold;
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.ad_ctaButton:hover {
+    transform: scale(1.05);
+    background: white;
+}
+
+/* COUNTRY BUTTONS */
+.ad_countryButtons {
+    margin-top: 25px;
+}
+
+.ad_countryButtons button {
+    margin: 8px;
+    padding: 10px 20px;
+
+    border-radius: 20px;
+    border: none;
+
+    background: rgba(255,255,255,0.1);
+    color: white;
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.ad_countryButtons button:hover {
+    background: var(--ad_accent);
+    color: var(--ad_primary);
+}
+
+/* ANIMATION */
+@keyframes ad_fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/*======================== TAGS ======================== */
+/* TAG CONTAINER */
+#ad_stadiumTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    padding: 10px 15px;
+    margin-bottom: 15px;
+
+    background: white;
+    border-radius: 15px;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* INDIVIDUAL TAG */
+.ad_tag {
+    padding: 10px 18px;
+
+    background: rgba(20,33,61,0.9);
+    color: white;
+
+    border-radius: 20px;
+
+    font-size: 14px;
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+/* HOVER */
+.ad_tag:hover {
+    background: var(--ad_accent);
+    color: var(--ad_primary);
+    transform: scale(1.05);
+}
+.ad_tag.activeTag {
+    background: var(--ad_accent);
+    color: var(--ad_primary);
 }
