@@ -7,10 +7,8 @@
       "stadium": "BMO Field",
       "lat": 43.6332,
       "lng": -79.4187,
-      "type": "stadium",
-      "image": "images/stadiums/toronto.jpg",
-      "description": "Toronto’s BMO Field will host matches in a vibrant city known for culture and nightlife.",
-      "price": 150
+      "description": "BMO Field will host FIFA World Cup 2026 matches in Toronto, offering a lively football atmosphere in Canada’s largest city.",
+      "price": 180
     },
     {
       "id": 2,
@@ -19,10 +17,8 @@
       "stadium": "BC Place",
       "lat": 49.2767,
       "lng": -123.1119,
-      "type": "stadium",
-      "image": "images/stadiums/vancouver.jpg",
-      "description": "Modern stadium with stunning mountain and ocean views.",
-      "price": 140
+      "description": "BC Place is a modern indoor stadium set to host World Cup matches, surrounded by scenic mountains and waterfront views.",
+      "price": 170
     },
     {
       "id": 3,
@@ -31,10 +27,8 @@
       "stadium": "MetLife Stadium",
       "lat": 40.8135,
       "lng": -74.0745,
-      "type": "stadium",
-      "image": "images/stadiums/newyork.jpg",
-      "description": "One of the largest stadiums, expected to host the final.",
-      "price": 250
+      "description": "MetLife Stadium is expected to host the FIFA World Cup 2026 Final, making it one of the most iconic venues of the tournament.",
+      "price": 350
     },
     {
       "id": 4,
@@ -43,10 +37,8 @@
       "stadium": "SoFi Stadium",
       "lat": 33.9535,
       "lng": -118.3392,
-      "type": "stadium",
-      "image": "images/stadiums/losangeles.jpg",
-      "description": "State-of-the-art stadium in entertainment capital of the world.",
-      "price": 230
+      "description": "SoFi Stadium is a state-of-the-art venue in Los Angeles, combining entertainment, technology, and world-class football experiences.",
+      "price": 320
     },
     {
       "id": 5,
@@ -55,10 +47,8 @@
       "stadium": "AT&T Stadium",
       "lat": 32.7473,
       "lng": -97.0945,
-      "type": "stadium",
-      "image": "images/stadiums/dallas.jpg",
-      "description": "Iconic stadium known for its massive screen and capacity.",
-      "price": 180
+      "description": "AT&T Stadium will host multiple World Cup matches and is famous for its massive capacity and immersive fan experience.",
+      "price": 260
     },
     {
       "id": 6,
@@ -67,10 +57,8 @@
       "stadium": "Hard Rock Stadium",
       "lat": 25.9580,
       "lng": -80.2389,
-      "type": "stadium",
-      "image": "images/stadiums/miami.jpg",
-      "description": "Sunny destination with beaches and nightlife.",
-      "price": 210
+      "description": "Hard Rock Stadium offers a vibrant World Cup experience in Miami, combining football with beaches and nightlife.",
+      "price": 280
     },
     {
       "id": 7,
@@ -79,10 +67,8 @@
       "stadium": "Mercedes-Benz Stadium",
       "lat": 33.7550,
       "lng": -84.4008,
-      "type": "stadium",
-      "image": "images/stadiums/atlanta.jpg",
-      "description": "Futuristic stadium with unique retractable roof.",
-      "price": 170
+      "description": "Mercedes-Benz Stadium features a futuristic design and will host key matches during the FIFA World Cup 2026.",
+      "price": 240
     },
     {
       "id": 8,
@@ -91,10 +77,8 @@
       "stadium": "Lumen Field",
       "lat": 47.5952,
       "lng": -122.3316,
-      "type": "stadium",
-      "image": "images/stadiums/seattle.jpg",
-      "description": "Passionate football city with loud atmosphere.",
-      "price": 160
+      "description": "Lumen Field is known for its electric atmosphere and passionate fans, making it a standout World Cup venue.",
+      "price": 220
     },
     {
       "id": 9,
@@ -103,10 +87,8 @@
       "stadium": "Levi's Stadium",
       "lat": 37.4030,
       "lng": -121.9700,
-      "type": "stadium",
-      "image": "images/stadiums/sanfran.jpg",
-      "description": "Located in Silicon Valley, combining tech and sport.",
-      "price": 220
+      "description": "Levi's Stadium, located in Silicon Valley, blends technology and sport for a modern World Cup experience.",
+      "price": 300
     },
     {
       "id": 10,
@@ -115,10 +97,8 @@
       "stadium": "Gillette Stadium",
       "lat": 42.0909,
       "lng": -71.2643,
-      "type": "stadium",
-      "image": "images/stadiums/boston.jpg",
-      "description": "Historic sports city with strong fan culture.",
-      "price": 190
+      "description": "Gillette Stadium will host World Cup matches in a historic sports region known for its passionate supporters.",
+      "price": 260
     },
     {
       "id": 11,
@@ -127,10 +107,8 @@
       "stadium": "Lincoln Financial Field",
       "lat": 39.9008,
       "lng": -75.1675,
-      "type": "stadium",
-      "image": "images/stadiums/philadelphia.jpg",
-      "description": "Known for passionate fans and rich sports history.",
-      "price": 170
+      "description": "Lincoln Financial Field offers a classic American sports atmosphere for FIFA World Cup 2026 matches.",
+      "price": 240
     },
     {
       "id": 12,
@@ -139,10 +117,8 @@
       "stadium": "Arrowhead Stadium",
       "lat": 39.0490,
       "lng": -94.4839,
-      "type": "stadium",
-      "image": "images/stadiums/kansascity.jpg",
-      "description": "Famous for record-breaking crowd noise.",
-      "price": 150
+      "description": "Arrowhead Stadium is famous for its loud fans and will provide an intense World Cup matchday experience.",
+      "price": 210
     },
     {
       "id": 13,
@@ -151,10 +127,8 @@
       "stadium": "NRG Stadium",
       "lat": 29.6847,
       "lng": -95.4107,
-      "type": "stadium",
-      "image": "images/stadiums/houston.jpg",
-      "description": "Large indoor stadium perfect for summer matches.",
-      "price": 180
+      "description": "NRG Stadium is a climate-controlled venue ideal for hosting summer World Cup matches in Houston.",
+      "price": 250
     },
     {
       "id": 14,
@@ -163,10 +137,8 @@
       "stadium": "Estadio Akron",
       "lat": 20.6829,
       "lng": -103.4623,
-      "type": "stadium",
-      "image": "images/stadiums/guadalajara.jpg",
-      "description": "Modern stadium in a culturally rich city.",
-      "price": 90
+      "description": "Estadio Akron will host World Cup matches in Guadalajara, a city rich in football culture and tradition.",
+      "price": 120
     },
     {
       "id": 15,
@@ -175,10 +147,8 @@
       "stadium": "Estadio BBVA",
       "lat": 25.6692,
       "lng": -100.2447,
-      "type": "stadium",
-      "image": "images/stadiums/monterrey.jpg",
-      "description": "Stadium with breathtaking mountain backdrop.",
-      "price": 85
+      "description": "Estadio BBVA offers stunning mountain views and a modern setting for FIFA World Cup 2026 matches.",
+      "price": 110
     },
     {
       "id": 16,
@@ -187,10 +157,8 @@
       "stadium": "Estadio Azteca",
       "lat": 19.3029,
       "lng": -99.1505,
-      "type": "stadium",
-      "image": "images/stadiums/mexicocity.jpg",
-      "description": "Legendary stadium hosting its third World Cup.",
-      "price": 100
+      "description": "Estadio Azteca is a legendary stadium that will host its third World Cup, making it one of football’s most historic venues.",
+      "price": 200
     }
   ]
 }
