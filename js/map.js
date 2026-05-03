@@ -146,6 +146,21 @@ function showInfoPanel(loc) {
 
     // Load local events for this host city.
     loadEventsForPanel(loc.city);
+
+    // ================= LOAD TRAVEL TIME =================
+getTravelTime(loc.lat, loc.lng, function(distance, time) {
+
+    var container = document.getElementById("ad_travelTime");
+
+    if (!distance) {
+        container.innerHTML = "Travel info unavailable";
+        return;
+    }
+
+    container.innerHTML =
+        "🚗 Distance from city centre: " + distance + " km<br>" +
+        "⏱ Drive Time: " + time + " mins";
+});
     
     // Slide the panel up from the bottom.
     document.getElementById("ad_infoPanel").classList.add("active");
@@ -470,8 +485,10 @@ function calculateRoute() {
         return;
     }
 
+    // Get the route results panel.
     var routeInfo = document.getElementById("ad_routeInfo");
 
+    // If the route results panel does not exist, create it above the map.
     if (!routeInfo) {
         routeInfo = document.createElement("div");
         routeInfo.id = "ad_routeInfo";
@@ -480,67 +497,98 @@ function calculateRoute() {
         mapContainer.parentNode.insertBefore(routeInfo, mapContainer);
     }
 
-    // Tell the user the route is being calculated.
-    routeInfo.innerHTML = "Calculating route...";
+    // Show a loading message while the API calls are running.
+    routeInfo.innerHTML = "Calculating route summary...";
 
-    var waypoints = [];
+    // Call Geoapify three times for three travel modes.
+    getGeoapifyRoute("drive", function(driveDistance, driveTime) {
 
-    // Middle stops become waypoints.
-    for (var i = 1; i < ad_routeStops.length - 1; i++) {
+        getGeoapifyRoute("walk", function(walkDistance, walkTime) {
 
-        waypoints.push({
-            location: ad_routeStops[i],
-            stopover: true
+            getGeoapifyRoute("bicycle", function(cycleDistance, cycleTime) {
+
+                // If any route fails, show a simple error message.
+                if (!driveDistance || !walkDistance || !cycleDistance) {
+                    showModal(
+                        "Route Error",
+                        "Geoapify could not calculate this route"
+                    );
+
+                    routeInfo.innerHTML = "";
+                    return;
+                }
+
+                // Show all route results in the route panel.
+                routeInfo.innerHTML =
+                    "<h3>Route Summary</h3>" +
+                    "<p>🚗 Driving: " + driveDistance + " km | " + driveTime + " mins</p>" +
+                    "<p>🚶 Walking: " + walkDistance + " km | " + walkTime + " mins</p>" +
+                    "<p>🚴 Cycling: " + cycleDistance + " km | " + cycleTime + " mins</p>";
+            });
         });
+    });
+}
+
+
+
+// ================= GEOAPIFY ROUTE API =================
+function getGeoapifyRoute(mode, callback) {
+
+    // Your Geoapify API key.
+    var apiKey = "1c57b34713ee49ffb2e2b8c5ea9ef2bf";
+
+    // Build the waypoints text for Geoapify.
+    // Format: lat,lng|lat,lng|lat,lng
+    var waypointsText = "";
+
+    for (var i = 0; i < ad_routeStops.length; i++) {
+
+        // Add a separator before every stop except the first one.
+        if (i > 0) {
+            waypointsText = waypointsText + "|";
+        }
+
+        waypointsText = waypointsText +
+            ad_routeStops[i].lat + "," +
+            ad_routeStops[i].lng;
     }
 
-    // First stop is the start, last stop is the end.
-    var request = {
-        origin: ad_routeStops[0],
-        destination: ad_routeStops[ad_routeStops.length - 1],
-        waypoints: waypoints,
-        travelMode: "DRIVING"
-    };
+    // Create the Geoapify URL.
+    var url = "https://api.geoapify.com/v1/routing"
+        + "?waypoints=" + waypointsText
+        + "&mode=" + mode
+        + "&apiKey=" + apiKey;
 
-    // Ask Google Maps to create the route.
-    ad_directionsService.route(request, function(result, status) {
+    // Call Geoapify using fetch.
+    fetch(url)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data) {
 
-        if (status === "OK") {
+            // Check that Geoapify returned a route.
+            if (data.features && data.features.length > 0) {
 
-            // Draw the route on the map.
-            ad_directionsRenderer.setDirections(result);
+                var distance = data.features[0].properties.distance;
+                var time = data.features[0].properties.time;
 
-            var legs = result.routes[0].legs;
-            var totalDistance = 0;
-            var totalDuration = 0;
+                // Convert meters to kilometres.
+                distance = (distance / 1000).toFixed(1);
 
-            // Add all route parts together.
-            for (var j = 0; j < legs.length; j++) {
-                totalDistance = totalDistance + legs[j].distance.value;
-                totalDuration = totalDuration + legs[j].duration.value;
+                // Convert seconds to minutes.
+                time = Math.round(time / 60);
+
+                callback(distance, time);
+
+            } else {
+                callback(null, null);
             }
+        })
+        .catch(function() {
 
-            // Convert meters to kilometres.
-            var distanceKm = totalDistance / 1000;
-
-            // Convert seconds to minutes.
-            var durationMinutes = totalDuration / 60;
-
-            // Show route distance and time above the map.
-            routeInfo.innerHTML =
-                "Distance: " + distanceKm.toFixed(1) +
-                " km | Time: " + Math.round(durationMinutes) + " mins";
-
-        } else {
-
-            routeInfo.innerHTML = "";
-
-            showModal(
-                "Route Error",
-                "Google Maps could not create this route. Status: " + status
-            );
-        }
-    });
+            // Return empty values if the API request fails.
+            callback(null, null);
+        });
 }
 
 // ================= CLEAR ROUTE =================
