@@ -103,39 +103,50 @@
 
     <h2 class="ad_sectionTitle">Explore Map</h2>
 
-    <div class="ad_mapTools">
+    <div id="ad_stadiumTags"></div>
 
-        <div id="ad_stadiumTags"></div>
+    <div class="ad_mapLayout">
 
-        <div class="ad_controlGroups">
+        <div class="ad_mapSidePanel">
 
-            <div class="ad_controlGroup">
-                <h3>Nearby Places</h3>
-                <div class="ad_mapControls">
-                    <button onclick="togglePlaces('restaurant')">🍝 Restaurants</button>
-                    <button onclick="togglePlaces('hotel')">🏨 Hotels</button>
-                    <button onclick="togglePlaces('tourist_attraction')">🎯 Attractions</button>
+            <div class="ad_mapTools">
+
+                <div class="ad_controlGroups">
+
+                    <div class="ad_controlGroup">
+                        <h3>Nearby Places</h3>
+                        <div class="ad_mapControls">
+                            <button onclick="togglePlaces('restaurant')">Restaurants</button>
+                            <button onclick="togglePlaces('hotel')">Hotels</button>
+                            <button onclick="togglePlaces('tourist_attraction')">Attractions</button>
+                        </div>
+                    </div>
+
+                    <div class="ad_controlGroup">
+                        <h3>Route Planner</h3>
+                        <div class="ad_routeControls">
+                            <button onclick="calculateRoute()">Show Route</button>
+                            <button onclick="clearRoute()">Clear Route</button>
+                        </div>
+                    </div>
+
                 </div>
+
             </div>
 
-            <div class="ad_controlGroup">
-                <h3>Route Planner</h3>
-                <div class="ad_routeControls">
-                    <button onclick="calculateRoute()">Show Route</button>
-                    <button onclick="clearRoute()">Clear Route</button>
-                </div>
-            </div>
+            <div id="ad_routeInfo"></div>
+
+        </div>
+
+        <div class="ad_mapMainPanel">
+
+            <div id="ad_mapContainer"></div>
 
         </div>
 
     </div>
 
-    <div id="ad_routeInfo"></div>
-
-    <div id="ad_mapContainer"></div>
-
 </section>
-
 <!-- ================= INFO PANEL ================= -->
 <div id="ad_infoPanel">
 
@@ -184,3 +195,4 @@
 
 </body>
 </html>
+
