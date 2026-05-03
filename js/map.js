@@ -123,16 +123,8 @@ function showInfoPanel(loc) {
         lng: loc.lng
     };
 
-    // A stadium marker click starts a new route.
-    // Any old route is removed first.
-    ad_directionsRenderer.setDirections({ routes: [] });
-    ad_routeStops = [];
-
-    // Add the selected stadium as the first route point.
-    ad_routeStops.push({
-        lat: loc.lat,
-        lng: loc.lng
-    });
+    // Start a new route at this stadium.
+    startRouteAtStadium(loc);
 
     // Display the stadium name.
     document.getElementById("ad_placeTitle").innerHTML = loc.stadium;
@@ -154,9 +146,36 @@ function showInfoPanel(loc) {
 
     // Load local events for this host city.
     loadEventsForPanel(loc.city);
-
+    
     // Slide the panel up from the bottom.
     document.getElementById("ad_infoPanel").classList.add("active");
+}
+
+
+
+// ================= START ROUTE AT STADIUM =================
+function startRouteAtStadium(loc) {
+
+    // Remove any old route line from the map.
+    if (ad_directionsRenderer) {
+        ad_directionsRenderer.setDirections({ routes: [] });
+    }
+
+    // Empty old route stops.
+    ad_routeStops = [];
+
+    // Add this stadium as the first route stop.
+    ad_routeStops.push({
+        lat: loc.lat,
+        lng: loc.lng
+    });
+
+    // Clear old route distance and time text.
+    var routeInfo = document.getElementById("ad_routeInfo");
+
+    if (routeInfo) {
+        routeInfo.innerHTML = "";
+    }
 }
 
 
@@ -344,12 +363,17 @@ function createPlaceMarker(place) {
 
     marker.addListener("click", function() {
 
-    // Add this nearby place to the route stops.
-    // The stadium marker is the first stop, and nearby markers come after it.
-    ad_routeStops.push({
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng()
-    });
+    // If the route has no stadium yet, use the selected stadium as the start.
+    // This helps if the user selected a stadium tag before clicking places.
+    if (ad_routeStops.length === 0 && ad_lastLocation) {
+        ad_routeStops.push({
+            lat: ad_lastLocation.lat,
+            lng: ad_lastLocation.lng
+        });
+    }
+
+    // Add this clicked nearby place to the route.
+    addNearbyStopToRoute(place);
 
     // Get full place details (needed for photos)
     ad_placesService.getDetails({
@@ -398,6 +422,22 @@ function createPlaceMarker(place) {
 
 
 
+// ================= ADD NEARBY STOP TO ROUTE =================
+function addNearbyStopToRoute(place) {
+
+    // Get the nearby place latitude and longitude.
+    var stopLat = place.geometry.location.lat();
+    var stopLng = place.geometry.location.lng();
+
+    // Add this nearby place as the next route stop.
+    ad_routeStops.push({
+        lat: stopLat,
+        lng: stopLng
+    });
+}
+
+
+
 // ================= CLEAR NEARBY PLACE MARKERS =================
 function clearPlaceMarkers() {
 
@@ -421,17 +461,7 @@ function closePanel() {
 // ================= CALCULATE ROUTE =================
 function calculateRoute() {
 
-    // Make sure the route services are ready.
-    if (!ad_directionsService || !ad_directionsRenderer) {
-        showModal(
-            "Route Error",
-            "The map route service is not ready yet"
-        );
-        return;
-    }
-
-    // A route needs at least 2 locations:
-    // 1 start location and 1 end location.
+    // A route needs at least 2 locations.
     if (ad_routeStops.length < 2) {
         showModal(
             "Route Error",
@@ -440,12 +470,9 @@ function calculateRoute() {
         return;
     }
 
-    // Find the route info box.
     var routeInfo = document.getElementById("ad_routeInfo");
 
-    // If the route info box is missing, create it above the map.
     if (!routeInfo) {
-
         routeInfo = document.createElement("div");
         routeInfo.id = "ad_routeInfo";
 
@@ -453,50 +480,41 @@ function calculateRoute() {
         mapContainer.parentNode.insertBefore(routeInfo, mapContainer);
     }
 
+    // Tell the user the route is being calculated.
+    routeInfo.innerHTML = "Calculating route...";
+
     var waypoints = [];
 
-    // Every stop between the first and last stop becomes a waypoint.
+    // Middle stops become waypoints.
     for (var i = 1; i < ad_routeStops.length - 1; i++) {
 
         waypoints.push({
-            location: {
-                lat: ad_routeStops[i].lat,
-                lng: ad_routeStops[i].lng
-            },
+            location: ad_routeStops[i],
             stopover: true
         });
     }
 
-    // The first stop is the start.
-    var startPoint = {
-        lat: ad_routeStops[0].lat,
-        lng: ad_routeStops[0].lng
-    };
-
-    // The last stop is the end.
-    var endPoint = {
-        lat: ad_routeStops[ad_routeStops.length - 1].lat,
-        lng: ad_routeStops[ad_routeStops.length - 1].lng
-    };
-
-    // This is the request sent to Google Directions.
+    // First stop is the start, last stop is the end.
     var request = {
-        origin: startPoint,
-        destination: endPoint,
+        origin: ad_routeStops[0],
+        destination: ad_routeStops[ad_routeStops.length - 1],
         waypoints: waypoints,
         travelMode: "DRIVING"
     };
 
-    // Ask Google Maps to calculate the route.
+    // Ask Google Maps to create the route.
     ad_directionsService.route(request, function(result, status) {
 
         if (status === "OK") {
+
+            // Draw the route on the map.
+            ad_directionsRenderer.setDirections(result);
 
             var legs = result.routes[0].legs;
             var totalDistance = 0;
             var totalDuration = 0;
 
-            // Add all route legs together.
+            // Add all route parts together.
             for (var j = 0; j < legs.length; j++) {
                 totalDistance = totalDistance + legs[j].distance.value;
                 totalDuration = totalDuration + legs[j].duration.value;
@@ -508,19 +526,18 @@ function calculateRoute() {
             // Convert seconds to minutes.
             var durationMinutes = totalDuration / 60;
 
-            // Show the route distance and time.
+            // Show route distance and time above the map.
             routeInfo.innerHTML =
                 "Distance: " + distanceKm.toFixed(1) +
                 " km | Time: " + Math.round(durationMinutes) + " mins";
 
-            // Draw the route on the map.
-            ad_directionsRenderer.setDirections(result);
-
         } else {
+
+            routeInfo.innerHTML = "";
 
             showModal(
                 "Route Error",
-                "Google Maps could not create this route"
+                "Google Maps could not create this route. Status: " + status
             );
         }
     });
@@ -535,7 +552,7 @@ function clearRoute() {
     // Empty the route stops array.
     ad_routeStops = [];
 
-    // Clear the route distance and time text.
+    // Clear the distance and time text.
     var routeInfo = document.getElementById("ad_routeInfo");
 
     if (routeInfo) {
