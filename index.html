@@ -13,25 +13,17 @@
 <!-- ================= NAVBAR ================= -->
 <nav class="ad_navbar">
 
-    <!-- LOGO BLOCK -->
     <div class="ad_logoContainer">
-
         <div class="ad_logoIcon">⚽</div>
-
-        <div class="ad_logoText">
-            GoalRoute <span>2026</span>
-        </div>
-
+        <div class="ad_logoText">GoalRoute <span>2026</span></div>
     </div>
 
-    <!-- MENU -->
     <div class="ad_menu">
         <a href="#ad_home">Home</a>
         <a href="#ad_cards">Explore</a>
         <a href="#ad_map">Map</a>
     </div>
 
-    <!-- HAMBURGER -->
     <div class="ad_hamburger" onclick="toggleMenu()">☰</div>
 
 </nav>
@@ -39,10 +31,8 @@
 <!-- ================= HERO ================= -->
 <section id="ad_home" class="ad_heroSection">
 
-    <!-- Overlay -->
     <div class="ad_heroOverlay"></div>
 
-    <!-- Content -->
     <div class="ad_heroContent">
 
         <h1 class="ad_heroTitle">
@@ -53,12 +43,10 @@
             Explore stadiums, discover cities, and build your perfect match-day experience across North America.
         </p>
 
-        <!-- CTA BUTTON -->
         <button class="ad_ctaButton" onclick="scrollToExplore()">
             Start Exploring ↓
         </button>
 
-        <!-- Country Filters -->
         <div class="ad_countryButtons">
             <button onclick="selectCountry('canada')">🇨🇦 Canada</button>
             <button onclick="selectCountry('usa')">🇺🇸 USA</button>
@@ -69,23 +57,72 @@
 
 </section>
 
+<!-- ================= EXPLORE SECTION ================= -->
+<section id="ad_cards" class="ad_exploreSection">
+
+    <h2 class="ad_sectionTitle">Explore Your World Cup Experience</h2>
+
+    <div class="ad_featureRow">
+
+        <div class="ad_featureBox">
+            <div class="ad_featureIcon">🏟</div>
+            <h3>Find Stadiums</h3>
+            <p>Browse World Cup stadiums and jump straight to each location on the map.</p>
+        </div>
+
+        <div class="ad_featureBox">
+            <div class="ad_featureIcon">🍝</div>
+            <h3>Discover Nearby Places</h3>
+            <p>Explore restaurants, hotels, and attractions around each stadium.</p>
+        </div>
+
+        <div class="ad_featureBox">
+            <div class="ad_featureIcon">🗺</div>
+            <h3>Plan Your Route</h3>
+            <p>Select a stadium, add nearby stops, and view your travel route.</p>
+        </div>
+
+    </div>
+
+</section>
 
 <!-- ================= MAP ================= -->
 <section id="ad_map" class="ad_mapSection">
 
     <h2 class="ad_sectionTitle">Explore Map</h2>
-     <div id="ad_stadiumTags"></div>
-    <!-- Controls inside map section -->
-    <div class="ad_mapControls">
-        <button onclick="togglePlaces('restaurant')">🍝 Restaurants</button>
-        <button onclick="togglePlaces('hotel')">🏨 Hotels</button>
-        <button onclick="togglePlaces('tourist_attraction')">🎯 Attractions</button>
+
+    <div class="ad_mapTools">
+
+        <div id="ad_stadiumTags"></div>
+
+        <div class="ad_controlGroups">
+
+            <div class="ad_controlGroup">
+                <h3>Nearby Places</h3>
+                <div class="ad_mapControls">
+                    <button onclick="togglePlaces('restaurant')">🍝 Restaurants</button>
+                    <button onclick="togglePlaces('hotel')">🏨 Hotels</button>
+                    <button onclick="togglePlaces('tourist_attraction')">🎯 Attractions</button>
+                </div>
+            </div>
+
+            <div class="ad_controlGroup">
+                <h3>Route Planner</h3>
+                <div class="ad_routeControls">
+                    <button onclick="calculateRoute()">Show Route</button>
+                    <button onclick="clearRoute()">Clear Route</button>
+                </div>
+            </div>
+
+        </div>
+
     </div>
+
+    <div id="ad_routeInfo"></div>
 
     <div id="ad_mapContainer"></div>
 
 </section>
-
 
 <!-- ================= INFO PANEL ================= -->
 <div id="ad_infoPanel">
@@ -96,24 +133,41 @@
 
         <h2 id="ad_placeTitle"></h2>
 
-        <!-- Image -->
         <img id="ad_placeImage" src="" alt="stadium">
 
-        <!-- Extra info -->
         <p id="ad_placeDetails"></p>
 
         <h3>Nearby Restaurants</h3>
         <div id="ad_nearbyList"></div>
 
+        <div class="ad_localEvents">
+            <h3>Local Events</h3>
+            <p>Check local fan zones, city festivals, and match-day events near this stadium.</p>
+            <div id="ad_eventsList"></div>
+        </div>
+
+        <h3>Travel Time</h3>
+        <div id="ad_travelTime"></div>
+
     </div>
 
 </div>
 
+<!-- ================= CUSTOM MODAL ================= -->
+<div id="ad_errorModal">
+
+    <div class="ad_modalBox">
+        <h2 id="ad_modalTitle">No Stadium Selected</h2>
+        <p id="ad_modalMessage">Please select a stadium before using this feature.</p>
+        <button onclick="closeModal()">Go Back</button>
+    </div>
+
+</div>
 
 <!-- JS -->
 <script src="js/script.js"></script>
+<script src="js/api.js"></script>
 <script src="js/map.js"></script>
-
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAALp6k9INnko-DW664s_wOMrb3nR9qLk8&libraries=places&callback=initMap" async defer></script>
 
 </body>
