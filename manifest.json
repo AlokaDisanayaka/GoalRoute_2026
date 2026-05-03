@@ -1,0 +1,48 @@
+{
+  "name": "GoalRoute 2026",
+  "short_name": "GoalRoute",
+  "id": "/index.html",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "description": "Plan World Cup stadium visits, nearby places, events, and routes.",
+  "background_color": "#FFFFFF",
+  "theme_color": "#14213D",
+
+  "icons": [
+    {
+      "src": "images/footballer.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "images/ball.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "images/maskable-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+
+  "screenshots": [
+    {
+      "src": "images/pwa_wide.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "GoalRoute desktop view"
+    },
+    {
+      "src": "images/pwa_mobile.jpg",
+      "sizes": "390x844",
+      "type": "image/jpeg",
+      "label": "GoalRoute mobile view"
+    }
+  ]
+}
