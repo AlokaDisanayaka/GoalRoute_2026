@@ -26,6 +26,9 @@ var ad_directionsRenderer;
 // This array stores the route locations in the order the user clicks them.
 var ad_routeStops = [];
 
+// This stores the Geoapify route line drawn on the map.
+var ad_geoapifyRouteLine = null;
+
 
 // ================= INIT MAP =================
 function initMap() {
@@ -174,6 +177,12 @@ function startRouteAtStadium(loc) {
     // Remove any old route line from the map.
     if (ad_directionsRenderer) {
         ad_directionsRenderer.setDirections({ routes: [] });
+    }
+
+    // Remove any old Geoapify route line from the map.
+    if (ad_geoapifyRouteLine) {
+        ad_geoapifyRouteLine.setMap(null);
+        ad_geoapifyRouteLine = null;
     }
 
     // Empty old route stops.
@@ -500,22 +509,38 @@ function calculateRoute() {
     // Show a loading message while the API calls are running.
     routeInfo.innerHTML = "Calculating route summary...";
 
-    // Call Geoapify three times for three travel modes.
-    getGeoapifyRoute("drive", function(driveDistance, driveTime) {
+    // Call Geoapify for driving first.
+    // The driving route is the one we draw on the map.
+    getGeoapifyRoute("drive", function(driveDistance, driveTime, driveData) {
 
+        if (!driveDistance) {
+            showModal(
+                "Route Error",
+                "Geoapify could not calculate the driving route"
+            );
+
+            routeInfo.innerHTML = "";
+            return;
+        }
+
+        // Draw the driving route as soon as it is ready.
+        drawGeoapifyRoute(driveData);
+
+        // Then calculate walking and cycling for the summary panel.
         getGeoapifyRoute("walk", function(walkDistance, walkTime) {
 
             getGeoapifyRoute("bicycle", function(cycleDistance, cycleTime) {
 
-                // If any route fails, show a simple error message.
-                if (!driveDistance || !walkDistance || !cycleDistance) {
-                    showModal(
-                        "Route Error",
-                        "Geoapify could not calculate this route"
-                    );
+                // If walking fails, show N/A instead of breaking the route.
+                if (!walkDistance) {
+                    walkDistance = "N/A";
+                    walkTime = "N/A";
+                }
 
-                    routeInfo.innerHTML = "";
-                    return;
+                // If cycling fails, show N/A instead of breaking the route.
+                if (!cycleDistance) {
+                    cycleDistance = "N/A";
+                    cycleTime = "N/A";
                 }
 
                 // Show all route results in the route panel.
@@ -578,7 +603,7 @@ function getGeoapifyRoute(mode, callback) {
                 // Convert seconds to minutes.
                 time = Math.round(time / 60);
 
-                callback(distance, time);
+                callback(distance, time, data);
 
             } else {
                 callback(null, null);
@@ -591,11 +616,60 @@ function getGeoapifyRoute(mode, callback) {
         });
 }
 
+
+
+// ================= DRAW GEOAPIFY ROUTE =================
+function drawGeoapifyRoute(data) {
+
+    // Remove old route line 
+    if (ad_geoapifyRouteLine) {
+        ad_geoapifyRouteLine.setMap(null);
+        ad_geoapifyRouteLine = null;
+    }
+
+    var routePath = [];
+
+    // Draw a clear line between the locations the user selected.
+    for (var i = 0; i < ad_routeStops.length; i++) {
+
+        routePath.push({
+            lat: ad_routeStops[i].lat,
+            lng: ad_routeStops[i].lng
+        });
+    }
+
+    // Draw the route line on the Google Map.
+    ad_geoapifyRouteLine = new google.maps.Polyline({
+        path: routePath,
+        map: ad_map,
+        strokeColor: "#E11D48",
+        strokeOpacity: 1,
+        strokeWeight: 9,
+        geodesic: true,
+        zIndex: 999
+    });
+
+    // Move the map so the full route is visible.
+    var bounds = new google.maps.LatLngBounds();
+
+    for (var m = 0; m < routePath.length; m++) {
+        bounds.extend(routePath[m]);
+    }
+
+    ad_map.fitBounds(bounds);
+}
+
 // ================= CLEAR ROUTE =================
 function clearRoute() {
 
     // Remove the route line from the map.
     ad_directionsRenderer.setDirections({ routes: [] });
+
+    // Remove the Geoapify route line from the map.
+    if (ad_geoapifyRouteLine) {
+        ad_geoapifyRouteLine.setMap(null);
+        ad_geoapifyRouteLine = null;
+    }
 
     // Empty the route stops array.
     ad_routeStops = [];
