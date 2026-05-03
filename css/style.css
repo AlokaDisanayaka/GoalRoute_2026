@@ -266,9 +266,30 @@ button:hover {
     background: var(--ad_background);
 }
 
+.ad_mapLayout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 26px;
+    align-items: start;
+    max-width: 1360px;
+    margin: 0 auto;
+}
+
+.ad_mapSidePanel {
+    grid-column: 1;
+    grid-row: 1;
+    display: block;
+}
+
+.ad_mapMainPanel {
+    grid-column: 2;
+    grid-row: 1;
+    display: block;
+}
+
 .ad_mapTools {
-    max-width: 1180px;
-    margin: 0 auto 24px auto;
+    max-width: none;
+    margin: 0 0 18px 0;
     padding: 22px;
     border: 1px solid var(--ad_border);
     border-radius: 20px;
@@ -277,14 +298,13 @@ button:hover {
 }
 
 .ad_controlGroups {
-    display: flex;
-    gap: 18px;
-    margin-top: 18px;
+    display: block;
+    margin-top: 0;
 }
 
 .ad_controlGroup {
-    flex: 1;
-    padding: 18px;
+    margin-bottom: 18px;
+    padding: 20px;
     border-radius: 16px;
     background: #F8FAFC;
 }
@@ -299,15 +319,15 @@ button:hover {
 .ad_routeControls {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 12px;
 }
 
 #ad_mapContainer {
     width: 100%;
-    max-width: 1180px;
-    height: 560px;
-    margin: 0 auto;
+    max-width: none;
+    height: 600px;
+    margin: 0;
     border-radius: 22px;
     overflow: hidden;
     box-shadow: 0 18px 45px rgba(18, 33, 58, 0.20);
@@ -318,8 +338,15 @@ button:hover {
     display: flex;
     gap: 10px;
     overflow-x: auto;
-    padding: 5px 5px 14px 5px;
+    width: 100%;
+    max-width: 1360px;
+    margin: 0 auto 22px auto;
+    padding: 16px;
     white-space: nowrap;
+    border: 1px solid var(--ad_border);
+    border-radius: 20px;
+    background: white;
+    box-shadow: var(--ad_shadow);
 }
 
 .ad_tag {
@@ -346,9 +373,9 @@ button:hover {
 
 /* ================= ROUTE SUMMARY CARD ================= */
 #ad_routeInfo {
-    max-width: 720px;
-    margin: 0 auto 18px auto;
-    padding: 18px 22px;
+    max-width: none;
+    margin: 0;
+    padding: 20px 22px;
     border: 1px solid var(--ad_border);
     border-radius: 18px;
     background: white;
@@ -598,9 +625,25 @@ button:hover {
         flex-direction: column;
     }
 
+    .ad_mapLayout {
+        display: block;
+    }
+
+    .ad_controlGroups {
+        width: auto;
+    }
+
     .ad_exploreSection,
     .ad_mapSection {
         padding: 45px 16px;
+    }
+
+    .ad_mapTools {
+        margin-bottom: 18px;
+    }
+
+    #ad_routeInfo {
+        margin-bottom: 18px;
     }
 
     .ad_mapControls,
@@ -609,7 +652,7 @@ button:hover {
     }
 
     #ad_mapContainer {
-        height: 430px;
+        height: 460px;
         border-radius: 18px;
     }
 
