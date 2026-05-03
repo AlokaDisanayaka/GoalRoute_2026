@@ -102,9 +102,10 @@ function getCityEvents(cityName, callback) {
 // ================= GEOAPIFY ROUTE TIME =================
 function getTravelTime(lat, lng, callback) {
 
+    //my ticketmaster API KEY 
     var apiKey = "1c57b34713ee49ffb2e2b8c5ea9ef2bf";
 
-    // Example: calculate route from city center to stadium
+    // calculate route from city center to stadium
     // simulate a nearby starting point for demo
     var startLat = lat + 0.02;
     var startLng = lng + 0.02;

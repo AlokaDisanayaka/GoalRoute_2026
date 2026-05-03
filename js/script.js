@@ -1,4 +1,3 @@
-// ================= GLOBAL DATA =================
 
 // This array stores all stadium data after it is loaded from the JSON file.
 var locationsData = [];

@@ -17,10 +17,10 @@ var ad_currentType = null;
 
 // Local fallback image used if Google Places has no stadium photo.
 var ad_fallbackImage = "images/hero.jpg";
-// This service asks Google Maps to calculate the route.
+// the service which asks Google Maps to calculate the route.
 var ad_directionsService;
 
-// This renderer draws the route line on the map.
+// this renderer draws the route line on the map.
 var ad_directionsRenderer;
 
 // This array stores the route locations in the order the user clicks them.
@@ -141,7 +141,7 @@ function showInfoPanel(loc) {
     // Set the fallback image first 
     document.getElementById("ad_placeImage").src = ad_fallbackImage;
 
-    // Load a high-quality Google Places stadium photo.
+    // Load a high quality Google Places stadium photo.
     loadStadiumPhoto(loc.stadium, loc.city);
 
     // Load nearby restaurants for this stadium.
@@ -207,7 +207,7 @@ function startRouteAtStadium(loc) {
 // ================= LOAD HIGH QUALITY STADIUM PHOTO =================
 function loadStadiumPhoto(stadiumName, cityName) {
 
-    // Build a stronger search query
+   //query....
     var request = {
         query: stadiumName + " stadium " + cityName,
         fields: ["name", "photos"]
@@ -267,7 +267,7 @@ function loadNearbyRestaurants(lat, lng) {
             results &&
             results.length > 0) {
 
-            // Do not try to show more restaurants than Google returns.
+            // do not try to show more restaurants than Google returns.
             if (results.length < limit) {
                 limit = results.length;
             }
@@ -302,14 +302,14 @@ function loadNearbyRestaurants(lat, lng) {
 // ================= TOGGLE NEARBY PLACE MARKERS =================
 function togglePlaces(type) {
 
-    // If the same button is clicked again, remove those markers.
+    // if the same button is clicked again, remove those markers.
     if (ad_currentType === type) {
         clearPlaceMarkers();
         ad_currentType = null;
         return;
     }
 
-    // Save the selected nearby place type.
+    // save the selected nearby place type.
     ad_currentType = type;
 
     // Remove old nearby markers before adding new ones.
@@ -387,8 +387,7 @@ function createPlaceMarker(place) {
 
     marker.addListener("click", function() {
 
-    // If the route has no stadium yet, use the selected stadium as the start.
-    // This helps if the user selected a stadium tag before clicking places.
+    // If the route has no stadium yet, use the selected stadium as the start to  helps if the user selected a stadium tag before clicking places.
     if (ad_routeStops.length === 0 && ad_lastLocation) {
         ad_routeStops.push({
             lat: ad_lastLocation.lat,
@@ -396,7 +395,7 @@ function createPlaceMarker(place) {
         });
     }
 
-    // Add this clicked nearby place to the route.
+    // add this clicked nearby place to the route.
     addNearbyStopToRoute(place);
 
     // Get full place details (needed for photos)
@@ -494,7 +493,7 @@ function calculateRoute() {
         return;
     }
 
-    // Get the route results panel.
+    // get the route results panel.
     var routeInfo = document.getElementById("ad_routeInfo");
 
     // If the route results panel does not exist, create it above the map.
@@ -506,11 +505,11 @@ function calculateRoute() {
         mapContainer.parentNode.insertBefore(routeInfo, mapContainer);
     }
 
-    // Show a loading message while the API calls are running.
+    // Show a loadng message while the API calls are running.
     routeInfo.innerHTML = "Calculating route summary...";
 
     // Call Geoapify for driving first.
-    // The driving route is the one we draw on the map.
+    // The driving route is the one drawn on the map.
     getGeoapifyRoute("drive", function(driveDistance, driveTime, driveData) {
 
         if (!driveDistance) {
@@ -531,13 +530,13 @@ function calculateRoute() {
 
             getGeoapifyRoute("bicycle", function(cycleDistance, cycleTime) {
 
-                // If walking fails, show N/A instead of breaking the route.
+                // i f walking fails, show N/A instead of breaking the route.
                 if (!walkDistance) {
                     walkDistance = "N/A";
                     walkTime = "N/A";
                 }
 
-                // If cycling fails, show N/A instead of breaking the route.
+                // if cycling fails, show N/A instead of breaking the route.
                 if (!cycleDistance) {
                     cycleDistance = "N/A";
                     cycleTime = "N/A";
@@ -559,7 +558,7 @@ function calculateRoute() {
 // ================= GEOAPIFY ROUTE API =================
 function getGeoapifyRoute(mode, callback) {
 
-    // Your Geoapify API key.
+    // myGeoapify API key.
     var apiKey = "1c57b34713ee49ffb2e2b8c5ea9ef2bf";
 
     // Build the waypoints text for Geoapify.
@@ -690,7 +689,7 @@ function loadEventsForPanel(cityName) {
     container.innerHTML =
         "<p class='ad_nearbyMessage'>Loading local events...</p>";
 
-    // Call API (from api.js)
+    // Call API from api.js
     getCityEvents(cityName, function(events) {
 
         var html = "";
