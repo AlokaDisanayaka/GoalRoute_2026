@@ -17,7 +17,14 @@ var ad_currentType = null;
 
 // Local fallback image used if Google Places has no stadium photo.
 var ad_fallbackImage = "images/hero.jpg";
+// This service asks Google Maps to calculate the route.
+var ad_directionsService;
 
+// This renderer draws the route line on the map.
+var ad_directionsRenderer;
+
+// This array stores the route locations in the order the user clicks them.
+var ad_routeStops = [];
 
 
 // ================= INIT MAP =================
@@ -30,6 +37,14 @@ function initMap() {
             lat: 39,
             lng: -98
         }
+    });
+
+    // Create the Google Directions service.
+    ad_directionsService = new google.maps.DirectionsService();
+
+    // Create the Google Directions renderer and attach it to the map.
+    ad_directionsRenderer = new google.maps.DirectionsRenderer({
+        map: ad_map
     });
 
     // Start the Google Places service.
@@ -108,6 +123,17 @@ function showInfoPanel(loc) {
         lng: loc.lng
     };
 
+    // A stadium marker click starts a new route.
+    // Any old route is removed first.
+    ad_directionsRenderer.setDirections({ routes: [] });
+    ad_routeStops = [];
+
+    // Add the selected stadium as the first route point.
+    ad_routeStops.push({
+        lat: loc.lat,
+        lng: loc.lng
+    });
+
     // Display the stadium name.
     document.getElementById("ad_placeTitle").innerHTML = loc.stadium;
 
@@ -125,6 +151,9 @@ function showInfoPanel(loc) {
 
     // Load nearby restaurants for this stadium.
     loadNearbyRestaurants(loc.lat, loc.lng);
+
+    // Load local events for this host city.
+    loadEventsForPanel(loc.city);
 
     // Slide the panel up from the bottom.
     document.getElementById("ad_infoPanel").classList.add("active");
@@ -245,7 +274,10 @@ function togglePlaces(type) {
 
     // Ask the user to select a stadium first.
     if (!ad_lastLocation) {
-        alert("Please select a stadium first.");
+        showModal(
+            "No Stadium Selected",
+            "Please select a stadium before exploring nearby places."
+        );
         return;
     }
 
@@ -311,8 +343,55 @@ function createPlaceMarker(place) {
     });
 
     marker.addListener("click", function() {
-        infoWindow.open(ad_map, marker);
+
+    // Add this nearby place to the route stops.
+    // The stadium marker is the first stop, and nearby markers come after it.
+    ad_routeStops.push({
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng()
     });
+
+    // Get full place details (needed for photos)
+    ad_placesService.getDetails({
+        placeId: place.place_id,
+        fields: ["name", "rating", "formatted_address", "photos"]
+    }, function(result, status) {
+
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+
+            var photoUrl = "";
+
+            if (result.photos && result.photos.length > 0) {
+                photoUrl = result.photos[0].getUrl({
+                    maxWidth: 300
+                });
+            } else {
+                photoUrl = "https://source.unsplash.com/300x200/?restaurant";
+            }
+
+            var content = `
+                <div style="width:200px; font-family: Arial;">
+
+                    <img src="${photoUrl}" 
+                         style="width:100%; height:120px; object-fit:cover; border-radius:10px; margin-bottom:10px;">
+
+                    <strong>${result.name}</strong><br>
+
+                    ⭐ ${result.rating || "N/A"}<br>
+
+                    <small>${result.formatted_address}</small>
+
+                </div>
+            `;
+
+            var infoWindow = new google.maps.InfoWindow({
+                content: content
+            });
+
+            infoWindow.open(ad_map, marker);
+        }
+    });
+});
 
     ad_placesMarkers.push(marker);
 }
@@ -335,4 +414,188 @@ function clearPlaceMarkers() {
 function closePanel() {
 
     document.getElementById("ad_infoPanel").classList.remove("active");
+}
+
+
+
+// ================= CALCULATE ROUTE =================
+function calculateRoute() {
+
+    // Make sure the route services are ready.
+    if (!ad_directionsService || !ad_directionsRenderer) {
+        showModal(
+            "Route Error",
+            "The map route service is not ready yet"
+        );
+        return;
+    }
+
+    // A route needs at least 2 locations:
+    // 1 start location and 1 end location.
+    if (ad_routeStops.length < 2) {
+        showModal(
+            "Route Error",
+            "Select at least 2 locations"
+        );
+        return;
+    }
+
+    // Find the route info box.
+    var routeInfo = document.getElementById("ad_routeInfo");
+
+    // If the route info box is missing, create it above the map.
+    if (!routeInfo) {
+
+        routeInfo = document.createElement("div");
+        routeInfo.id = "ad_routeInfo";
+
+        var mapContainer = document.getElementById("ad_mapContainer");
+        mapContainer.parentNode.insertBefore(routeInfo, mapContainer);
+    }
+
+    var waypoints = [];
+
+    // Every stop between the first and last stop becomes a waypoint.
+    for (var i = 1; i < ad_routeStops.length - 1; i++) {
+
+        waypoints.push({
+            location: {
+                lat: ad_routeStops[i].lat,
+                lng: ad_routeStops[i].lng
+            },
+            stopover: true
+        });
+    }
+
+    // The first stop is the start.
+    var startPoint = {
+        lat: ad_routeStops[0].lat,
+        lng: ad_routeStops[0].lng
+    };
+
+    // The last stop is the end.
+    var endPoint = {
+        lat: ad_routeStops[ad_routeStops.length - 1].lat,
+        lng: ad_routeStops[ad_routeStops.length - 1].lng
+    };
+
+    // This is the request sent to Google Directions.
+    var request = {
+        origin: startPoint,
+        destination: endPoint,
+        waypoints: waypoints,
+        travelMode: "DRIVING"
+    };
+
+    // Ask Google Maps to calculate the route.
+    ad_directionsService.route(request, function(result, status) {
+
+        if (status === "OK") {
+
+            var legs = result.routes[0].legs;
+            var totalDistance = 0;
+            var totalDuration = 0;
+
+            // Add all route legs together.
+            for (var j = 0; j < legs.length; j++) {
+                totalDistance = totalDistance + legs[j].distance.value;
+                totalDuration = totalDuration + legs[j].duration.value;
+            }
+
+            // Convert meters to kilometres.
+            var distanceKm = totalDistance / 1000;
+
+            // Convert seconds to minutes.
+            var durationMinutes = totalDuration / 60;
+
+            // Show the route distance and time.
+            routeInfo.innerHTML =
+                "Distance: " + distanceKm.toFixed(1) +
+                " km | Time: " + Math.round(durationMinutes) + " mins";
+
+            // Draw the route on the map.
+            ad_directionsRenderer.setDirections(result);
+
+        } else {
+
+            showModal(
+                "Route Error",
+                "Google Maps could not create this route"
+            );
+        }
+    });
+}
+
+// ================= CLEAR ROUTE =================
+function clearRoute() {
+
+    // Remove the route line from the map.
+    ad_directionsRenderer.setDirections({ routes: [] });
+
+    // Empty the route stops array.
+    ad_routeStops = [];
+
+    // Clear the route distance and time text.
+    var routeInfo = document.getElementById("ad_routeInfo");
+
+    if (routeInfo) {
+        routeInfo.innerHTML = "";
+    }
+}
+// ================= LOAD EVENTS INTO PANEL =================
+function loadEventsForPanel(cityName) {
+
+    var container = document.getElementById("ad_eventsList");
+
+    // Show loading message
+    container.innerHTML =
+        "<p class='ad_nearbyMessage'>Loading local events...</p>";
+
+    // Call API (from api.js)
+    getCityEvents(cityName, function(events) {
+
+        var html = "";
+
+        // If no events found
+        if (events.length === 0) {
+
+            container.innerHTML =
+                "<p class='ad_nearbyMessage'>No events found for this city.</p>";
+
+            return;
+        }
+
+        // Loop through events
+        for (var i = 0; i < events.length; i++) {
+
+            html += "<div class='ad_nearbyItem'>";
+
+            // Event name
+            html += "<strong>" + events[i].name + "</strong><br>";
+
+            // Event date (safe check)
+            if (events[i].dates &&
+                events[i].dates.start &&
+                events[i].dates.start.localDate) {
+
+                html += "<span>📅 "
+                    + events[i].dates.start.localDate +
+                    "</span><br>";
+            }
+
+            // Optional: venue name
+            if (events[i]._embedded &&
+                events[i]._embedded.venues &&
+                events[i]._embedded.venues.length > 0) {
+
+                html += "<span>📍 "
+                    + events[i]._embedded.venues[0].name +
+                    "</span>";
+            }
+
+            html += "</div>";
+        }
+
+        container.innerHTML = html;
+    });
 }
