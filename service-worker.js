@@ -1,5 +1,5 @@
 // Cache name
-var cacheName = "goalroute-cache-v2";
+var cacheName = "goalroute-cache-v6";
 
 // Files saved for offline use
 var filesToCache = [
@@ -51,17 +51,19 @@ self.addEventListener("activate", function(event) {
     );
 });
 
-// Load from cache first, then try network
+// Try network first so the newest code is used.
+// If offline, use the cached version.
 self.addEventListener("fetch", function(event) {
 
     event.respondWith(
-        caches.match(event.request).then(function(response) {
+        fetch(event.request)
+            .then(function(networkResponse) {
 
-            if (response) {
-                return response;
-            }
+                return networkResponse;
+            })
+            .catch(function() {
 
-            return fetch(event.request);
-        })
+                return caches.match(event.request);
+            })
     );
 });
