@@ -75,6 +75,10 @@ function selectStadium(id) {
                 lng: loc.lng
             };
 
+            // Start a route from this stadium if the map route function exists.
+            if (typeof startRouteAtStadium === "function") {
+                startRouteAtStadium(loc);
+            }
         
         }
     }
@@ -155,14 +159,59 @@ function focusStadium(id, element) {
 
             var loc = locationsData[i];
 
+            // Save this location for nearby place searches.
+            ad_lastLocation = {
+                lat: loc.lat,
+                lng: loc.lng
+            };
+
+            // Start a route from this stadium.
+            if (typeof startRouteAtStadium === "function") {
+                startRouteAtStadium(loc);
+            }
+
             ad_map.panTo({ lat: loc.lat, lng: loc.lng });
             ad_map.setZoom(13);
 
-            document.getElementById("ad_mapSection").scrollIntoView({
+            document.getElementById("ad_map").scrollIntoView({
                 behavior: "smooth"
             });
         }
     }
+}
+
+
+// ================= CUSTOM MODAL POPUP =================
+function showModal(title, message) {
+
+    // Change the modal title and message before showing it.
+    document.getElementById("ad_modalTitle").innerHTML = title;
+    document.getElementById("ad_modalMessage").innerHTML = message;
+
+    // Show the modal popup.
+    document.getElementById("ad_errorModal").style.display = "flex";
+}
+
+// ================= ERROR MODAL HELPER =================
+function showErrorModal() {
+
+    showModal(
+        "No Stadium Selected",
+        "Please select a stadium first."
+    );
+}
+
+// ================= CLOSE MODAL POPUP =================
+function closeModal() {
+
+    // Hide the modal popup.
+    document.getElementById("ad_errorModal").style.display = "none";
+}
+
+// ================= CLOSE ERROR MODAL HELPER =================
+function closeErrorModal() {
+
+    closeModal();
 }
 // Start loading the page data.
 loadData();
