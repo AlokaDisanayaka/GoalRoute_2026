@@ -215,3 +215,17 @@ function closeErrorModal() {
 }
 // Start loading the page data.
 loadData();
+
+// Register service worker
+if ("serviceWorker" in navigator) {
+
+    navigator.serviceWorker.register("/service-worker.js", {
+        scope: "/"
+    })
+        .then(function(registration) {
+            console.log("Service Worker Registered", registration.scope);
+        })
+        .catch(function(error) {
+            console.log("Service Worker Registration Failed", error);
+        });
+}
