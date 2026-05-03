@@ -1,5 +1,5 @@
 // Cache name
-var cacheName = "goalroute-cache-v6";
+var cacheName = "goalroute-cache-v7";
 
 // Files saved for offline use
 var filesToCache = [

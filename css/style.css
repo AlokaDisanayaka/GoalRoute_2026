@@ -268,10 +268,10 @@ button:hover {
 
 .ad_mapLayout {
     display: grid;
-    grid-template-columns: 380px 1fr;
-    gap: 26px;
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 24px;
     align-items: start;
-    max-width: 1360px;
+    max-width: 1450px;
     margin: 0 auto;
 }
 
@@ -326,7 +326,7 @@ button:hover {
 #ad_mapContainer {
     width: 100%;
     max-width: none;
-    height: 600px;
+    height: 560px;
     margin: 0;
     border-radius: 22px;
     overflow: hidden;
@@ -339,7 +339,7 @@ button:hover {
     gap: 10px;
     overflow-x: auto;
     width: 100%;
-    max-width: 1360px;
+    max-width: 1450px;
     margin: 0 auto 22px auto;
     padding: 16px;
     white-space: nowrap;
@@ -581,7 +581,7 @@ button:hover {
 }
 
 /* ================= RESPONSIVE ================= */
-@media (max-width: 800px) {
+@media (max-width: 600px) {
 
     .ad_navbar {
         padding: 14px 18px;
@@ -652,7 +652,7 @@ button:hover {
     }
 
     #ad_mapContainer {
-        height: 460px;
+        height: 430px;
         border-radius: 18px;
     }
 
