@@ -1,12 +1,14 @@
 /* ================= ROOT COLOURS ================= */
 :root {
-    --ad_primary: #14213D;
+    --ad_primary: #12213A;
+    --ad_primarySoft: #22395F;
     --ad_accent: #FCA311;
-    --ad_background: #F7F8FA;
+    --ad_background: #F5F7FA;
     --ad_card: #FFFFFF;
     --ad_textDark: #1A1A1A;
-    --ad_textLight: #666666;
-    --ad_border: #E6E8EC;
+    --ad_textLight: #667085;
+    --ad_border: #E4E7EC;
+    --ad_shadow: 0 12px 30px rgba(18, 33, 58, 0.12);
 }
 
 /* ================= GLOBAL ================= */
@@ -22,7 +24,22 @@ body {
 }
 
 button {
+    padding: 11px 20px;
+    border: none;
+    border-radius: 25px;
+    background: var(--ad_primary);
+    color: white;
     font-family: Arial, sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(18, 33, 58, 0.18);
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    background: var(--ad_accent);
+    color: var(--ad_primary);
 }
 
 /* ================= NAVBAR ================= */
@@ -35,25 +52,32 @@ button {
     justify-content: space-between;
     align-items: center;
 
-    padding: 15px 40px;
-    background: rgba(20, 33, 61, 0.95);
+    padding: 16px 44px;
+    background: rgba(18, 33, 58, 0.96);
     color: white;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.18);
 }
 
 .ad_logoContainer {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .ad_logoIcon {
-    font-size: 24px;
+    width: 38px;
+    height: 38px;
+    line-height: 38px;
+    text-align: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    font-size: 22px;
 }
 
 .ad_logoText {
-    font-size: 20px;
+    font-size: 21px;
     font-weight: bold;
+    letter-spacing: 0.5px;
 }
 
 .ad_logoText span {
@@ -62,13 +86,16 @@ button {
 
 .ad_menu {
     display: flex;
-    gap: 25px;
+    align-items: center;
+    gap: 28px;
 }
 
 .ad_menu a {
     color: white;
     text-decoration: none;
     font-size: 16px;
+    font-weight: bold;
+    transition: 0.3s;
 }
 
 .ad_menu a:hover {
@@ -77,40 +104,54 @@ button {
 
 .ad_hamburger {
     display: none;
-    font-size: 26px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.12);
+    font-size: 25px;
     cursor: pointer;
 }
 
-/* ================= HERO ================= */
+/* ================= HERO SECTION ================= */
 .ad_heroSection {
     position: relative;
-    min-height: 82vh;
+    min-height: 86vh;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background: url("../images/hero.jpg") center/cover no-repeat;
+    background-image: url("../images/hero.jpg");
+    background-size: cover;
+    background-position: center;
 }
 
 .ad_heroOverlay {
     position: absolute;
-    inset: 0;
-    background: rgba(20, 33, 61, 0.78);
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: linear-gradient(
+        rgba(18, 33, 58, 0.68),
+        rgba(18, 33, 58, 0.92)
+    );
 }
 
 .ad_heroContent {
     position: relative;
-    max-width: 760px;
-    padding: 30px 20px;
+    max-width: 820px;
+    padding: 40px 20px;
     text-align: center;
     color: white;
 }
 
 .ad_heroTitle {
     margin: 0;
-    font-size: 58px;
-    line-height: 1.15;
+    font-size: 62px;
+    line-height: 1.12;
+    font-weight: bold;
 }
 
 .ad_heroTitle span {
@@ -118,60 +159,60 @@ button {
 }
 
 .ad_heroText {
-    margin: 20px auto;
-    max-width: 640px;
-    color: #E9EDF3;
+    max-width: 680px;
+    margin: 22px auto;
+    color: #EAECF0;
     font-size: 18px;
-    line-height: 1.6;
-}
-
-.ad_ctaButton,
-.ad_countryButtons button {
-    border: none;
-    border-radius: 24px;
-    cursor: pointer;
-    transition: 0.25s;
+    line-height: 1.7;
 }
 
 .ad_ctaButton {
+    margin-top: 8px;
     padding: 14px 30px;
     background: var(--ad_accent);
     color: var(--ad_primary);
-    font-weight: bold;
+}
+
+.ad_ctaButton:hover {
+    background: white;
 }
 
 .ad_countryButtons {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
-    margin-top: 24px;
+    gap: 12px;
+    margin-top: 26px;
 }
 
 .ad_countryButtons button {
-    padding: 10px 18px;
     background: rgba(255, 255, 255, 0.14);
     color: white;
+    box-shadow: none;
 }
 
-.ad_ctaButton:hover,
 .ad_countryButtons button:hover {
-    transform: translateY(-2px);
     background: white;
     color: var(--ad_primary);
 }
 
-/* ================= SECTION TITLES ================= */
+/* ================= SECTION SPACING ================= */
 .ad_sectionTitle {
-    margin: 0 0 28px 0;
+    margin: 0 0 32px 0;
     text-align: center;
     color: var(--ad_primary);
-    font-size: 30px;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.ad_exploreSection,
+.ad_mapSection {
+    margin-top: 40px;
+    padding: 70px 40px;
 }
 
 /* ================= EXPLORE SECTION ================= */
 .ad_exploreSection {
-    padding: 70px 40px;
     background: white;
 }
 
@@ -185,22 +226,27 @@ button {
 
 .ad_featureBox {
     flex: 1;
-    padding: 26px;
+    padding: 24px;
     border: 1px solid var(--ad_border);
     border-radius: 18px;
     background: var(--ad_card);
-    box-shadow: 0 10px 28px rgba(20, 33, 61, 0.08);
+    box-shadow: var(--ad_shadow);
+    transition: 0.3s;
+}
+
+.ad_featureBox:hover {
+    transform: translateY(-4px);
 }
 
 .ad_featureIcon {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     margin-bottom: 14px;
-    line-height: 44px;
+    line-height: 48px;
     text-align: center;
-    border-radius: 14px;
-    background: #FFF3D9;
-    font-size: 24px;
+    border-radius: 15px;
+    background: #FFF4DD;
+    font-size: 25px;
 }
 
 .ad_featureBox h3 {
@@ -217,18 +263,17 @@ button {
 
 /* ================= MAP SECTION ================= */
 .ad_mapSection {
-    padding: 70px 40px;
     background: var(--ad_background);
 }
 
 .ad_mapTools {
     max-width: 1180px;
     margin: 0 auto 24px auto;
-    padding: 20px;
+    padding: 22px;
     border: 1px solid var(--ad_border);
-    border-radius: 18px;
+    border-radius: 20px;
     background: white;
-    box-shadow: 0 12px 30px rgba(20, 33, 61, 0.08);
+    box-shadow: var(--ad_shadow);
 }
 
 .ad_controlGroups {
@@ -239,13 +284,13 @@ button {
 
 .ad_controlGroup {
     flex: 1;
-    padding: 16px;
-    border-radius: 14px;
-    background: #F7F8FA;
+    padding: 18px;
+    border-radius: 16px;
+    background: #F8FAFC;
 }
 
 .ad_controlGroup h3 {
-    margin: 0 0 12px 0;
+    margin: 0 0 14px 0;
     color: var(--ad_primary);
     font-size: 17px;
 }
@@ -254,26 +299,8 @@ button {
 .ad_routeControls {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-}
-
-.ad_mapControls button,
-.ad_routeControls button {
-    padding: 11px 17px;
-    border: none;
-    border-radius: 22px;
-    background: var(--ad_primary);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.25s;
-}
-
-.ad_mapControls button:hover,
-.ad_routeControls button:hover {
-    transform: translateY(-2px);
-    background: var(--ad_accent);
-    color: var(--ad_primary);
+    justify-content: center;
+    gap: 12px;
 }
 
 #ad_mapContainer {
@@ -281,22 +308,9 @@ button {
     max-width: 1180px;
     height: 560px;
     margin: 0 auto;
-    border-radius: 20px;
-    box-shadow: 0 16px 40px rgba(20, 33, 61, 0.18);
+    border-radius: 22px;
     overflow: hidden;
-}
-
-/* ================= ROUTE INFO ================= */
-#ad_routeInfo {
-    max-width: 1180px;
-    margin: 0 auto 15px auto;
-    padding: 12px 16px;
-    border-radius: 12px;
-    background: white;
-    color: var(--ad_primary);
-    font-weight: bold;
-    text-align: center;
-    box-shadow: 0 6px 16px rgba(20, 33, 61, 0.10);
+    box-shadow: 0 18px 45px rgba(18, 33, 58, 0.20);
 }
 
 /* ================= STADIUM TAGS ================= */
@@ -304,23 +318,22 @@ button {
     display: flex;
     gap: 10px;
     overflow-x: auto;
-
-    padding: 4px 4px 12px 4px;
+    padding: 5px 5px 14px 5px;
     white-space: nowrap;
 }
 
 .ad_tag {
     flex: 0 0 auto;
-    padding: 10px 17px;
+    padding: 11px 18px;
     border: 1px solid var(--ad_border);
-    border-radius: 999px;
+    border-radius: 30px;
     background: white;
     color: var(--ad_primary);
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(20, 33, 61, 0.08);
-    transition: 0.25s;
+    box-shadow: 0 5px 14px rgba(18, 33, 58, 0.10);
+    transition: 0.3s;
 }
 
 .ad_tag:hover,
@@ -331,6 +344,36 @@ button {
     color: var(--ad_primary);
 }
 
+/* ================= ROUTE SUMMARY CARD ================= */
+#ad_routeInfo {
+    max-width: 720px;
+    margin: 0 auto 18px auto;
+    padding: 18px 22px;
+    border: 1px solid var(--ad_border);
+    border-radius: 18px;
+    background: white;
+    color: var(--ad_primary);
+    text-align: center;
+    box-shadow: var(--ad_shadow);
+}
+
+#ad_routeInfo:empty {
+    display: none;
+}
+
+#ad_routeInfo h3 {
+    margin: 0 0 12px 0;
+    color: var(--ad_primary);
+    font-size: 20px;
+}
+
+#ad_routeInfo p {
+    margin: 8px 0;
+    color: var(--ad_textDark);
+    font-size: 15px;
+    font-weight: bold;
+}
+
 /* ================= INFO PANEL ================= */
 #ad_infoPanel {
     position: fixed;
@@ -339,15 +382,15 @@ button {
     z-index: 2000;
 
     width: 100%;
-    max-width: 940px;
-    max-height: 86vh;
-    padding: 24px;
+    max-width: 960px;
+    max-height: 88vh;
+    padding: 26px;
     box-sizing: border-box;
 
     background: white;
-    border-top-left-radius: 28px;
-    border-top-right-radius: 28px;
-    box-shadow: 0 -18px 50px rgba(0, 0, 0, 0.28);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    box-shadow: 0 -20px 55px rgba(0, 0, 0, 0.30);
     overflow-y: auto;
 
     transform: translate(-50%, 105%);
@@ -359,53 +402,55 @@ button {
 }
 
 #ad_infoContent {
-    max-width: 850px;
+    max-width: 880px;
     margin: 0 auto;
 }
 
 #ad_closePanel {
     position: absolute;
     top: 16px;
-    right: 20px;
+    right: 22px;
 
-    width: 34px;
-    height: 34px;
-    line-height: 34px;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
 
     text-align: center;
     border-radius: 50%;
-    background: #F1F3F6;
+    background: #F2F4F7;
     color: var(--ad_primary);
     font-size: 17px;
     font-weight: bold;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 #ad_closePanel:hover {
     background: var(--ad_accent);
 }
 
-#ad_placeTitle {
-    margin: 0 50px 18px 0;
-    color: var(--ad_primary);
-    font-size: 30px;
-    line-height: 1.2;
-}
-
 #ad_placeImage {
     display: block;
     width: 100%;
-    height: 330px;
+    height: 350px;
     margin-bottom: 20px;
     object-fit: cover;
-    border-radius: 20px;
-    background: #E9EDF3;
-    box-shadow: 0 10px 26px rgba(20, 33, 61, 0.16);
+    border-radius: 22px;
+    background: #EAECF0;
+    box-shadow: 0 12px 30px rgba(18, 33, 58, 0.18);
+}
+
+#ad_placeTitle {
+    margin: 0 50px 14px 0;
+    color: var(--ad_primary);
+    font-size: 32px;
+    line-height: 1.2;
+    font-weight: bold;
 }
 
 #ad_placeDetails {
     margin: 0 0 24px 0;
-    padding-bottom: 22px;
+    padding: 0 0 22px 0;
     border-bottom: 1px solid var(--ad_border);
     color: var(--ad_textLight);
     font-size: 16px;
@@ -413,23 +458,25 @@ button {
 }
 
 #ad_infoPanel h3 {
-    margin: 22px 0 12px 0;
+    margin: 24px 0 12px 0;
     color: var(--ad_primary);
     font-size: 20px;
 }
 
-#ad_nearbyList {
+#ad_nearbyList,
+#ad_eventsList {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
 }
 
 .ad_nearbyItem {
-    flex: 1 1 180px;
-    padding: 14px;
+    flex: 1 1 190px;
+    padding: 15px;
     border: 1px solid var(--ad_border);
-    border-radius: 14px;
+    border-radius: 16px;
     background: #FAFBFC;
+    box-shadow: 0 5px 14px rgba(18, 33, 58, 0.06);
 }
 
 .ad_nearbyItem strong {
@@ -441,18 +488,19 @@ button {
 
 .ad_nearbyItem span,
 .ad_nearbyMessage,
-.ad_localEvents p {
+.ad_localEvents p,
+#ad_travelTime {
     color: var(--ad_textLight);
     font-size: 14px;
     line-height: 1.6;
 }
 
 .ad_localEvents {
-    margin-top: 24px;
+    margin-top: 26px;
     padding: 18px;
-    border-radius: 16px;
+    border: 1px solid #FFE0A3;
+    border-radius: 18px;
     background: #FFF8EA;
-    border: 1px solid #FFE2A8;
 }
 
 .ad_localEvents h3 {
@@ -460,11 +508,11 @@ button {
 }
 
 .ad_localEvents p {
-    margin: 0;
+    margin: 0 0 12px 0;
 }
 
 .ad_mapPopup {
-    width: 180px;
+    width: 190px;
     line-height: 1.5;
 }
 
@@ -482,16 +530,16 @@ button {
     justify-content: center;
     align-items: center;
 
-    background: rgba(0, 0, 0, 0.55);
+    background: rgba(0, 0, 0, 0.58);
 }
 
 .ad_modalBox {
-    width: 300px;
+    width: 310px;
     padding: 28px;
-    border-radius: 18px;
+    border-radius: 20px;
     background: white;
     text-align: center;
-    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.30);
 }
 
 .ad_modalBox h2 {
@@ -505,32 +553,24 @@ button {
     line-height: 1.5;
 }
 
-.ad_modalBox button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 20px;
-    background: var(--ad_accent);
-    color: var(--ad_primary);
-    font-weight: bold;
-    cursor: pointer;
-}
-
 /* ================= RESPONSIVE ================= */
 @media (max-width: 800px) {
 
     .ad_navbar {
-        padding: 14px 20px;
+        padding: 14px 18px;
     }
 
     .ad_menu {
         display: none;
         flex-direction: column;
         position: absolute;
-        top: 58px;
-        right: 0;
+        top: 66px;
+        right: 12px;
         width: 210px;
         padding: 14px;
+        border-radius: 14px;
         background: var(--ad_primary);
+        box-shadow: var(--ad_shadow);
     }
 
     .ad_menu a {
@@ -541,8 +581,16 @@ button {
         display: block;
     }
 
+    .ad_heroSection {
+        min-height: 78vh;
+    }
+
     .ad_heroTitle {
         font-size: 36px;
+    }
+
+    .ad_heroText {
+        font-size: 16px;
     }
 
     .ad_featureRow,
@@ -555,24 +603,49 @@ button {
         padding: 45px 16px;
     }
 
+    .ad_mapControls,
+    .ad_routeControls {
+        justify-content: flex-start;
+    }
+
     #ad_mapContainer {
         height: 430px;
-        border-radius: 16px;
+        border-radius: 18px;
     }
 
     #ad_infoPanel {
-        width: 100%;
-        max-height: 88vh;
+        max-height: 90vh;
         padding: 20px 16px;
-        border-top-left-radius: 22px;
-        border-top-right-radius: 22px;
+        border-top-left-radius: 24px;
+        border-top-right-radius: 24px;
+    }
+
+    #ad_placeImage {
+        height: 230px;
     }
 
     #ad_placeTitle {
         font-size: 24px;
     }
+}
 
-    #ad_placeImage {
-        height: 230px;
+@media (max-width: 600px) {
+
+    .ad_heroTitle {
+        font-size: 32px;
+    }
+
+    .ad_sectionTitle {
+        font-size: 25px;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .ad_countryButtons button,
+    .ad_mapControls button,
+    .ad_routeControls button {
+        width: auto;
     }
 }
